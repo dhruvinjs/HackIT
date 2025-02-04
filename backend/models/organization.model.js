@@ -8,6 +8,14 @@ const organizationSchema = mongoose.Schema({
     sponser:{
         type:String,
     },
+    email:{
+        type:String,
+        required:true
+    },
+    password:{
+        type:String,
+        required:true
+    },
     hackathonsOrangized:[
         {
             type:mongoose.Schema.Types.ObjectId,

@@ -1,14 +1,21 @@
 import mongoose from "mongoose";
 
-const authSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema({
     name : {
         type:String,
         required:true,
         unique : true,
     },
+    email:{
+        type:String,
+        required:true
+    },
+    password:{
+        type:String,
+        required:true
+    },
     address:{
         type:String,
-        required : true,
     },
     participatedIn:[
         {
@@ -45,13 +52,10 @@ const authSchema = mongoose.Schema({
     githubProfile:{
         type:String,
     },
-    githubProfile:{
+    linkedInProfile:{
         type:String,
     }
-    ,linkedInProfile:{
-        type:String,
-    }
-    ,twitterInProfile:{
+    ,twitterProfile:{
         type:String,
     },
     isVerified:{
@@ -63,7 +67,6 @@ const authSchema = mongoose.Schema({
         enum:["admin","participant" , "organizer" , "mentor","judge"],
         default:"participant"
     }
-
+    
 },{timestamps:true})
-const Auth = mongoose.model("users" , authSchema);
-export default Auth;
+export const UserModel = mongoose.model("users" , UserSchema);
