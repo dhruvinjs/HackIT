@@ -55,6 +55,10 @@ const hackathonSchema = mongoose.Schema({
           amount: Number
         }
     ],
+    location:{
+        type:String,
+        required:true,
+    }
 
 },{timestamps:true})
 
