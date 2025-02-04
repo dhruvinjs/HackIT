@@ -6,6 +6,15 @@ const authSchema = mongoose.Schema({
         required:true,
         unique : true,
     },
+    email:{
+        type:String,
+        required:true,
+    },
+    password:{
+        type:String,
+        required:true,
+        minLength : 6
+    },
     address:{
         type:String,
         required : true,
