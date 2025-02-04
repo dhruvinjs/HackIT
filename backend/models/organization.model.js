@@ -32,10 +32,10 @@ const organizationSchema = mongoose.Schema({
     },
     members:[
         {
-            user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+            user: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
             role: {
               type: String,
-              enum: ['admin', 'organizer', 'mentor', 'participant'],
+              enum: ['admin', 'organizer', 'mentor'],
               default: 'participant'
             },
             joinedAt: {
@@ -44,7 +44,7 @@ const organizationSchema = mongoose.Schema({
             }
         }
     ]
-})
+},{timestamps:true})
 
 const Organization = mongoose.model("organizations",organizationSchema)
 export default Organization;

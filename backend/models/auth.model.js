@@ -60,10 +60,10 @@ const authSchema = mongoose.Schema({
     },
     role:{
         type:String,
-        enum:["admin","participant" , "organizer" , "mentor"],
+        enum:["admin","participant" , "organizer" , "mentor","judge"],
         default:"participant"
     }
 
-})
+},{timestamps:true})
 const Auth = mongoose.model("users" , authSchema);
 export default Auth;
