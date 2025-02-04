@@ -13,13 +13,13 @@ const authSchema = mongoose.Schema({
     participatedIn:[
         {
             type : mongoose.Schema.Types.ObjectId,
-            ref:"hackathon",
+            ref:"hackathons",
         }
     ],
     achievements:[
         {
             type : mongoose.Schema.Types.ObjectId,
-            ref:"hackathon",
+            ref:"hackathons",
         }
     ],
     league:{
