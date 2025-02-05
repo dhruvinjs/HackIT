@@ -37,7 +37,6 @@ export const userSignUp=asyncHandler(async (req,res) => {
         skills:z.array(z.string()).optional(),
         participatedIn:z.array(z.string()).optional(),
         achievements:z.array(z.string()).optional()
-
     })
     
    
@@ -49,13 +48,13 @@ export const userSignUp=asyncHandler(async (req,res) => {
 
     const { name, email, password, address, isAvailable, dob, collegeName, 
             githubProfile, linkedInProfile, role,achievements,participatedIn,skills } = parsedData.data;
-            const existingUser=await UserModel.findOne({email:email})
-            if(existingUser){
-                return res.status(400)
-                .json({
-                    message:"User Already Exists"
-                })
-            }
+    const existingUser=await UserModel.findOne({email:email})
+    if(existingUser){
+        return res.status(400)
+        .json({
+            message:"User Already Exists"
+        })
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const token=jwt.sign({email},process.env.JWT_SECRET,{expiresIn:"6h"})
 

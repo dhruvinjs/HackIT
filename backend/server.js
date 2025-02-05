@@ -1,7 +1,5 @@
-import { app } from "./app.js";
-import http from "http"
+import { server } from "./utils/socket.js";
 
-const server=http.createServer(app)
 const port = process.env.PORT || 3000
 
 import mongoose from "mongoose";

@@ -24,9 +24,7 @@ const hackathonSchema = mongoose.Schema({
         default: 4
     },
     participants: [
-        {
-          team: { type: mongoose.Schema.Types.ObjectId, ref: 'teams' }
-        }
+        { type: mongoose.Schema.Types.ObjectId, ref: 'teams' }
     ],
     endDate: {
         type: Date,

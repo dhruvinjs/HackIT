@@ -8,14 +8,6 @@ const organizationSchema = mongoose.Schema({
     sponser:{
         type:String,
     },
-    email:{
-        type:String,
-        required:true
-    },
-    password:{
-        type:String,
-        required:true
-    },
     hackathonsOrangized:[
         {
             type:mongoose.Schema.Types.ObjectId,
@@ -44,7 +36,7 @@ const organizationSchema = mongoose.Schema({
             role: {
               type: String,
               enum: ['admin', 'organizer', 'mentor'],
-              default: 'participant'
+              default: 'admin'
             },
             joinedAt: {
               type: Date,

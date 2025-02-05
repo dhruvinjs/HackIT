@@ -1,5 +1,5 @@
 import express from "express"
-import dotenv, { configDotenv } from "dotenv"
+import dotenv from "dotenv"
 
 dotenv.config({
     path:'./.env'
@@ -7,10 +7,9 @@ dotenv.config({
 
 import cookieParser from "cookie-parser"
 import cors from "cors"
-import mongoose from "mongoose"
 import { useroutes } from "./routes/user-routes.js"
-const app=express()
-const routes=express.Router()
+import organizationRoutes from "./routes/organization.routes.js"
+import { app } from "./utils/socket.js"
 
 import nodemailer from "nodemailer";
 
@@ -24,8 +23,8 @@ async function createTestAccount() {
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin: 'http://localhost:5173', // Allow requests from this URL
+    origin: 'http://localhost:5173',
+    credentials:true,
   }));
 app.use('/user',useroutes)
-
-export {app}
+app.use('/organization',organizationRoutes)
