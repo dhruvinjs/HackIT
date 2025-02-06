@@ -2,7 +2,7 @@ import React from 'react'
 
 function Footer() {
     return (
-        <footer className="mx-auto w-full relative text-center dark:bg-[#151515] text-white">
+        <footer className="mx-auto w-full relative text-center dark:bg-black text-white">
             <div className="px-6 py-4 md:py-7 xl:pt-10 xl:pb-6">
                 <h2 className="font-bold text-lg xl:text-2xl leading-snug">
                     Ready to get your productivity back?<br />Start your free trial today.
