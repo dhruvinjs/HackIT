@@ -4,8 +4,8 @@ function Hero() {
     return (
         <div className="min-h-screen flex flex-1 w-full flex-col items-center justify-center text-center px-4 py-10 bg-black">
             <a href=""
-                className="border border-white-700 dark:border-gray-300 rounded-lg py-2 px-4 text-white-400 dark:text-gray-300 text-sm mb-5 transition duration-300 ease-in-out hover:text-gray-500 dark:hover:text-gray-400">
-                Forget about spending hundreds $
+                className="my-16 border border-white-700 dark:border-gray-300 rounded-lg py-2 px-4 text-white-400 dark:text-gray-300 text-sm mb-5 transition duration-300 ease-in-out hover:text-gray-500 dark:hover:text-gray-400">
+                Forget about spending hundreds of $
             </a>
             <h1 className="mx-auto max-w-4xl font-display text-3xl md:text-6xl  lg:text-7xl font-bold tracking-normal text-white-300 dark:text-gray-300 ">
                 Effortlessly Manage
