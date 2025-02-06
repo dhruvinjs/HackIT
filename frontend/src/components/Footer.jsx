@@ -2,15 +2,9 @@ import React from 'react'
 
 function Footer() {
     return (
-<<<<<<< HEAD
-        <footer class="mx-auto w-full relative text-center dark:bg-black text-white">
-            <div class="px-6 py-4 md:py-7 xl:pt-10 xl:pb-6">
-                <h2 class="font-bold text-lg xl:text-2xl leading-snug">
-=======
-        <footer className="mx-auto w-full relative text-center dark:bg-[#151515] text-white">
+        <footer className="mx-auto w-full relative text-center dark:bg-black text-white">
             <div className="px-6 py-4 md:py-7 xl:pt-10 xl:pb-6">
                 <h2 className="font-bold text-lg xl:text-2xl leading-snug">
->>>>>>> 00acad6091797548f23bd96fdd940c8737cf6963
                     Ready to get your productivity back?<br />Start your free trial today.
                 </h2>
                 <a className="mt-5 px-6 py-2 text-lg font-medium leading-tight inline-block bg-blue-800 rounded-full shadow-xl border border-transparent hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-999 focus:ring-sky-500"
