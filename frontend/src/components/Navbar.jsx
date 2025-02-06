@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react"; // Import icons from Lucide
+import { Menu, X } from "lucide-react";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +15,7 @@ function Navbar() {
         <div className="flex items-center justify-between">
           <div className="flex shrink-0">
             <Link aria-current="page" className="flex items-center" to="/">
-              <p className="text-white text-2xl font-bold">HACKIT</p>
+              <span className="text-white text-2xl font-bold">HACKIT</span>
             </Link>
           </div>
 

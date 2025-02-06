@@ -9,6 +9,7 @@ function Contact() {
                 <div class="container flex flex-col min-h-screen px-6 py-12 mx-auto">
                     <div class="flex-1 lg:flex lg:items-center lg:-mx-6">
                         <div class="text-white lg:w-1/2 lg:mx-6">
+                        <h1 class="text-4xl font-bold capitalize lg:text-5xl mb-20">Contact Us</h1>
                             <h1 class="text-2xl font-semibold capitalize lg:text-3xl">Get a quote</h1>
 
                             <p class="max-w-xl mt-6">Ask us everything and we would love to hear from you</p>

@@ -1,105 +1,126 @@
-import React from 'react'
+import React from "react";
 
 function Work() {
-    return (
-        <div>
-            <section class="bg-black  py-12 sm:py-16 lg:py-20 xl:py-24">
-                <div class="mx-auto  max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="text-center">
-
-                        <h2 class="mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">How it Works
-                        </h2>
-                        <p class="mx-auto mt-4 text-white max-w-2xl text-lg font-normal text-whitelg:text-xl lg:leading-8">
-                        Follow these simple steps to organize your next successful hackathon
-                        </p>
-                    </div>
-                    <ul class="mx-auto mt-12 grid max-w-md grid-cols-1 gap-10 sm:mt-16 lg:mt-20 lg:max-w-5xl lg:grid-cols-4">
-                        <li class="flex-start group relative flex lg:flex-col">
-                            <span
-                                class="absolute left-[18px] top-14 h-[calc(100%_-_32px)] w-px bg-gray-300 lg:right-0 lg:left-auto lg:top-[18px] lg:h-px lg:w-[calc(100%_-_72px)]"
-                                aria-hidden="true"></span>
-                            <div
-                                class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gray-300 bg-gray-50 transition-all duration-200 group-hover:border-gray-900 group-hover:bg-gray-900">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                    class="h-5 w-5 text-gray-600 group-hover:text-white">
-                                    <path
-                                        d="M21 12C21 13.6569 16.9706 15 12 15C7.02944 15 3 13.6569 3 12M21 5C21 6.65685 16.9706 8 12 8C7.02944 8 3 6.65685 3 5M21 5C21 3.34315 16.9706 2 12 2C7.02944 2 3 3.34315 3 5M21 5V19C21 20.6569 16.9706 22 12 22C7.02944 22 3 20.6569 3 19V5"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                            </div>
-                            <div class="ml-6 lg:ml-0 lg:mt-10">
-                                <h3
-                                    class="text-xl font-bold text-white before:mb-2 before:block before:font-mono before:text-sm before:text-gray-500">
-                                    Create Your Event
-                                </h3>
-                                <h4 class="mt-2 text-base text-white">Set up your hackathon by defining event details, timeline, rules, and requirements. Customize registration forms and set participant limits.</h4>
-                            </div>
-                        </li>
-                        <li class="flex-start group relative flex lg:flex-col">
-                            <span
-                                class="absolute left-[18px] top-14 h-[calc(100%_-_32px)] w-px bg-gray-300 lg:right-0 lg:left-auto lg:top-[18px] lg:h-px lg:w-[calc(100%_-_72px)]"
-                                aria-hidden="true"></span>
-                            <div
-                                class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gray-300 bg-gray-50 transition-all duration-200 group-hover:border-gray-900 group-hover:bg-gray-900">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                    class="h-5 w-5 text-gray-600 group-hover:text-white">
-                                    <path
-                                        d="M2 3L2 21M22 3V21M11.8 20H12.2C13.8802 20 14.7202 20 15.362 19.673C15.9265 19.3854 16.3854 18.9265 16.673 18.362C17 17.7202 17 16.8802 17 15.2V8.8C17 7.11984 17 6.27976 16.673 5.63803C16.3854 5.07354 15.9265 4.6146 15.362 4.32698C14.7202 4 13.8802 4 12.2 4H11.8C10.1198 4 9.27976 4 8.63803 4.32698C8.07354 4.6146 7.6146 5.07354 7.32698 5.63803C7 6.27976 7 7.11984 7 8.8V15.2C7 16.8802 7 17.7202 7.32698 18.362C7.6146 18.9265 8.07354 19.3854 8.63803 19.673C9.27976 20 10.1198 20 11.8 20Z"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                            </div>
-                            <div class="ml-6 lg:ml-0 lg:mt-10">
-                                <h3
-                                    class="text-xl font-bold text-white before:mb-2 before:block before:font-mono before:text-sm before:text-gray-500">
-                                    Manage Registrations
-                                </h3>
-                                <h4 class="mt-2 text-base text-white">Review and approve participant applications, form teams, and communicate with registered participants through our platform.</h4>
-                            </div>
-                        </li>
-                        <li class="flex-start group relative flex lg:flex-col">
-                            <span
-                                class="absolute left-[18px] top-14 h-[calc(100%_-_32px)] w-px bg-gray-300 lg:right-0 lg:left-auto lg:top-[18px] lg:h-px lg:w-[calc(100%_-_72px)]"
-                                aria-hidden="true"></span>
-                            <div
-                                class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gray-300 bg-gray-50 transition-all duration-200 group-hover:border-gray-900 group-hover:bg-gray-900">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                    class="h-5 w-5 text-gray-600 group-hover:text-white">
-                                    <path
-                                        d="M22 12C22 17.5228 17.5228 22 12 22M22 12C22 6.47715 17.5228 2 12 2M22 12C22 9.79086 17.5228 8 12 8C6.47715 8 2 9.79086 2 12M22 12C22 14.2091 17.5228 16 12 16C6.47715 16 2 14.2091 2 12M12 22C6.47715 22 2 17.5228 2 12M12 22C14.2091 22 16 17.5228 16 12C16 6.47715 14.2091 2 12 2M12 22C9.79086 22 8 17.5228 8 12C8 6.47715 9.79086 2 12 2M2 12C2 6.47715 6.47715 2 12 2"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                            </div>
-                            <div class="ml-6 lg:ml-0 lg:mt-10">
-                                <h3
-                                    class="text-xl font-bold text-white before:mb-2 before:block before:font-mono before:text-sm before:text-gray-500">
-                                    Track Progress
-                                </h3>
-                                <h4 class="mt-2 text-base text-white">Monitor team progress, review submissions, and keep participants engaged with real-time updates and announcements.</h4>
-                            </div>
-                        </li>
-                        <li class="flex-start group relative flex lg:flex-col">
-                            <div
-                                class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gray-300 bg-gray-50 transition-all duration-200 group-hover:border-gray-900 group-hover:bg-gray-900">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                    class="h-5 w-5 text-gray-600 group-hover:text-white">
-                                    <path
-                                        d="M5.50049 10.5L2.00049 7.9999L3.07849 6.92193C3.964 6.03644 4.40676 5.5937 4.9307 5.31387C5.39454 5.06614 5.90267 4.91229 6.42603 4.86114C7.01719 4.80336 7.63117 4.92617 8.85913 5.17177L10.5 5.49997M18.4999 13.5L18.8284 15.1408C19.0742 16.3689 19.1971 16.983 19.1394 17.5743C19.0883 18.0977 18.9344 18.6059 18.6867 19.0699C18.4068 19.5939 17.964 20.0367 17.0783 20.9224L16.0007 22L13.5007 18.5M7 16.9998L8.99985 15M17.0024 8.99951C17.0024 10.1041 16.107 10.9995 15.0024 10.9995C13.8979 10.9995 13.0024 10.1041 13.0024 8.99951C13.0024 7.89494 13.8979 6.99951 15.0024 6.99951C16.107 6.99951 17.0024 7.89494 17.0024 8.99951ZM17.1991 2H16.6503C15.6718 2 15.1826 2 14.7223 2.11053C14.3141 2.20853 13.9239 2.37016 13.566 2.5895C13.1623 2.83689 12.8164 3.18282 12.1246 3.87469L6.99969 9C5.90927 10.0905 5.36406 10.6358 5.07261 11.2239C4.5181 12.343 4.51812 13.6569 5.07268 14.776C5.36415 15.3642 5.90938 15.9094 6.99984 16.9998V16.9998C8.09038 18.0904 8.63565 18.6357 9.22386 18.9271C10.343 19.4817 11.6569 19.4817 12.7761 18.9271C13.3643 18.6356 13.9095 18.0903 15 16.9997L20.1248 11.8745C20.8165 11.1827 21.1624 10.8368 21.4098 10.4331C21.6291 10.0753 21.7907 9.6851 21.8886 9.27697C21.9991 8.81664 21.9991 8.32749 21.9991 7.34918V6.8C21.9991 5.11984 21.9991 4.27976 21.6722 3.63803C21.3845 3.07354 20.9256 2.6146 20.3611 2.32698C19.7194 2 18.8793 2 17.1991 2Z"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                            </div>
-                            <div class="ml-6 lg:ml-0 lg:mt-10">
-                                <h3
-                                    class="text-xl font-bold text-white before:mb-2 before:block before:font-mono before:text-sm before:text-gray-500">
-                                    Evaluate Projects
-                                </h3>
-                                <h4 class="mt-2 text-base text-white">Use our built-in judging system to evaluate submissions, calculate scores, and determine winners transparently.</h4>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </section>
+  return (
+    <div>
+      <section class="bg-black  py-12 sm:py-16 lg:py-20 xl:py-24">
+        <div class="mx-auto  max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="text-center">
+            <h2 class="mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+              How it Works
+            </h2>
+            <p class="mx-auto mt-4 text-white max-w-2xl text-lg font-normal text-whitelg:text-xl lg:leading-8">
+              Follow these simple steps to organize your next successful
+              hackathon
+            </p>
+          </div>
+          <ul class="mx-auto mt-12 grid max-w-md grid-cols-1 gap-10 sm:mt-16 lg:mt-20 lg:max-w-5xl lg:grid-cols-4">
+            <li class="flex-start group relative flex lg:flex-col">
+              <span
+                class="absolute left-[18px] top-14 h-[calc(100%_-_32px)] w-px bg-gray-300 lg:right-0 lg:left-auto lg:top-[18px] lg:h-px lg:w-[calc(100%_-_72px)]"
+                aria-hidden="true"
+              ></span>
+              <div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gray-300 bg-gray-50 transition-all duration-200 group-hover:border-gray-900 group-hover:bg-gray-900">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="28px"
+                  viewBox="0 -960 960 960"
+                  width="28px"
+                  fill="#6b9bd2"
+                >
+                  <path d="M186.67-80q-27 0-46.84-19.83Q120-119.67 120-146.67v-600q0-27 19.83-46.83 19.84-19.83 46.84-19.83h56.66V-880h70v66.67h333.34V-880h70v66.67h56.66q27 0 46.84 19.83Q840-773.67 840-746.67v240h-66.67v-60H186.67v420h306.66V-80H186.67Zm0-553.33h586.66v-113.34H186.67v113.34Zm0 0v-113.34 113.34ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8.67 9 12.83 20 4.17 11 4.17 22t-4.33 22.5q-4.34 11.5-13.28 20.5L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+                </svg>
+              </div>
+              <div class="ml-6 lg:ml-0 lg:mt-10">
+                <h3 class="text-xl font-bold text-white before:mb-2 before:block before:font-mono before:text-sm before:text-gray-500">
+                  Create Your Event
+                </h3>
+                <h4 class="mt-2 text-base text-white">
+                  Set up your hackathon by defining event details, timeline,
+                  rules, and requirements. Customize registration forms and set
+                  participant limits.
+                </h4>
+              </div>
+            </li>
+            <li class="flex-start group relative flex lg:flex-col">
+              <span
+                class="absolute left-[18px] top-14 h-[calc(100%_-_32px)] w-px bg-gray-300 lg:right-0 lg:left-auto lg:top-[18px] lg:h-px lg:w-[calc(100%_-_72px)]"
+                aria-hidden="true"
+              ></span>
+              <div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gray-300 bg-gray-50 transition-all duration-200 group-hover:border-gray-900 group-hover:bg-gray-900">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="28px"
+                  viewBox="0 -960 960 960"
+                  width="28px"
+                  fill="#6b9bd2"
+                >
+                  <path d="M400-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM80-160v-112q0-33 17-62t47-44q51-26 115-44t141-18h14q6 0 12 2-8 18-13.5 37.5T404-360h-4q-71 0-127.5 18T180-306q-9 5-14.5 14t-5.5 20v32h252q6 21 16 41.5t22 38.5H80Zm560 40-12-60q-12-5-22.5-10.5T584-204l-58 18-40-68 46-40q-2-14-2-26t2-26l-46-40 40-68 58 18q11-8 21.5-13.5T628-460l12-60h80l12 60q12 5 22.5 11t21.5 15l58-20 40 70-46 40q2 12 2 25t-2 25l46 40-40 68-58-18q-11 8-21.5 13.5T732-180l-12 60h-80Zm40-120q33 0 56.5-23.5T760-320q0-33-23.5-56.5T680-400q-33 0-56.5 23.5T600-320q0 33 23.5 56.5T680-240ZM400-560q33 0 56.5-23.5T480-640q0-33-23.5-56.5T400-720q-33 0-56.5 23.5T320-640q0 33 23.5 56.5T400-560Zm0-80Zm12 400Z" />
+                </svg>
+              </div>
+              <div class="ml-6 lg:ml-0 lg:mt-10">
+                <h3 class="text-xl font-bold text-white before:mb-2 before:block before:font-mono before:text-sm before:text-gray-500">
+                  Manage Registrations
+                </h3>
+                <h4 class="mt-2 text-base text-white">
+                  Review and approve participant applications, form teams, and
+                  communicate with registered participants through our platform.
+                </h4>
+              </div>
+            </li>
+            <li class="flex-start group relative flex lg:flex-col">
+              <span
+                class="absolute left-[18px] top-14 h-[calc(100%_-_32px)] w-px bg-gray-300 lg:right-0 lg:left-auto lg:top-[18px] lg:h-px lg:w-[calc(100%_-_72px)]"
+                aria-hidden="true"
+              ></span>
+              <div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gray-300 bg-gray-50 transition-all duration-200 group-hover:border-gray-900 group-hover:bg-gray-900">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="28px"
+                  viewBox="0 -960 960 960"
+                  width="28px"
+                  fill="#6b9bd2"
+                >
+                  <path d="m105-399-65-47 200-320 120 140 160-260 120 180 135-214 65 47-198 314-119-179-152 247-121-141-145 233Zm475 159q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29ZM784-80 676-188q-21 14-45.5 21t-50.5 7q-75 0-127.5-52.5T400-340q0-75 52.5-127.5T580-520q75 0 127.5 52.5T760-340q0 26-7 50.5T732-244l108 108-56 56Z" />
+                </svg>
+              </div>
+              <div class="ml-6 lg:ml-0 lg:mt-10">
+                <h3 class="text-xl font-bold text-white before:mb-2 before:block before:font-mono before:text-sm before:text-gray-500">
+                  Track Progress
+                </h3>
+                <h4 class="mt-2 text-base text-white">
+                  Monitor team progress, review submissions, and keep
+                  participants engaged with real-time updates and announcements.
+                </h4>
+              </div>
+            </li>
+            <li class="flex-start group relative flex lg:flex-col">
+              <div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gray-300 bg-gray-50 transition-all duration-200 group-hover:border-gray-900 group-hover:bg-gray-900">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="28px"
+                  viewBox="0 -960 960 960"
+                  width="28px"
+                  fill="#6b9bd2"
+                >
+                  <path d="M141.33-120q-27 0-46.83-19.83-19.83-19.84-19.83-46.84v-586.66q0-27 19.83-46.84Q114.33-840 141.33-840h677.34q27 0 46.83 19.83 19.83 19.84 19.83 46.84v586.66q0 27-19.83 46.84Q845.67-120 818.67-120H141.33Zm0-66.67h677.34v-586.66H141.33v586.66ZM200-280h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-58.67 413.33v-586.66 586.66Z" />
+                </svg>
+              </div>
+              <div class="ml-6 lg:ml-0 lg:mt-10">
+                <h3 class="text-xl font-bold text-white before:mb-2 before:block before:font-mono before:text-sm before:text-gray-500">
+                  Evaluate Projects
+                </h3>
+                <h4 class="mt-2 text-base text-white">
+                  Use our built-in judging system to evaluate submissions,
+                  calculate scores, and determine winners transparently.
+                </h4>
+              </div>
+            </li>
+          </ul>
         </div>
-    )
+      </section>
+    </div>
+  );
 }
 
-export default Work
+export default Work;
