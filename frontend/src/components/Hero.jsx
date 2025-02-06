@@ -20,7 +20,7 @@ function Hero() {
             <h2 className="mx-auto mt-12 max-w-xl text-lg sm:text-xl md:text-2xl text-white-500 dark:text-gray-300 leading-7">
                 Streamline your hackathon organization process with our comprehensive management platform.
             </h2>
-            <div className='flex  sm:flex-row gap-5 mt-4'>
+            <div className='flex  sm:flex-row gap-5 mt-8 md:mt-4'>
                 <button className="bg-blue-500 text-white rounded-xl  font-medium px-4 py-3 sm:mt-10 transition"
                     href="">Get started</button>
                 <button className="bg-white text-black rounded-xl font-medium px-4 py-3 sm:mt-10 hover:bg-orange-500  transition"

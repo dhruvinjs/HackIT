@@ -2,9 +2,9 @@ import React from 'react'
 
 function Footer() {
     return (
-        <footer class="mx-auto w-full relative text-center dark:bg-[#1B1C1D] text-white">
-            <div class="px-6 py-8 md:py-14 xl:pt-20 xl:pb-12">
-                <h2 class="mt-10 font-bold text-lg xl:text-2xl leading-snug">
+        <footer class="mx-auto w-full relative text-center dark:bg-[#151515] text-white">
+            <div class="px-6 py-4 md:py-7 xl:pt-10 xl:pb-6">
+                <h2 class="font-bold text-lg xl:text-2xl leading-snug">
                     Ready to get your productivity back?<br />Start your free trial today.
                 </h2>
                 <a class="mt-5 px-6 py-2 text-lg font-medium leading-tight inline-block bg-blue-800 rounded-full shadow-xl border border-transparent hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-999 focus:ring-sky-500"

@@ -1,6 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function Signup() {
+
+    const [formData,setFormData] = useState({
+        name : "",
+        email : "",
+        password : ""
+    }) 
+
     return (
         <div className='w-full flex items-center justify-center min-h-screen bg-black'>
             <div class="w-full max-w-sm p-6  bg-white rounded-lg shadow-md dark:bg-[#1B1C1D]">
@@ -11,11 +18,11 @@ function Signup() {
                 <form class="mt-6">
                     <div>
                         <label for="fullname" class="block text-sm text-gray-800 dark:text-gray-200">Full Name</label>
-                        <input type="text" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+                        <input type="text" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" onChange={(e) => setFormData({...formData , name : e.target.value})}/>
                     </div>
                     <div className='mt-6'>
                         <label for="fullname" class="block text-sm text-gray-800 dark:text-gray-200">Email</label>
-                        <input type="email" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+                        <input type="email" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" onChange={(e) => setFormData({...formData,email : e.target.value})} />
                     </div>
 
                     <div class="mt-6">
@@ -23,7 +30,7 @@ function Signup() {
                             <label for="password" class="block text-sm text-gray-800 dark:text-gray-200">Password</label>
                         </div>
 
-                        <input type="password" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+                        <input type="password" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" onChange={(e) => setFormData({...formData,password : e.target.value})} />
                     </div>
 
                     <div class="mt-6">
