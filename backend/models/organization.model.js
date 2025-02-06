@@ -43,7 +43,10 @@ const organizationSchema = mongoose.Schema({
               default: Date.now
             }
         }
-    ]
+    ],
+    socketId:{
+        type:String
+    }
 },{timestamps:true})
 
 const Organization = mongoose.model("organizations",organizationSchema)

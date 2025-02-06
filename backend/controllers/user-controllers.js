@@ -6,6 +6,9 @@ import { asyncHandler } from "../utils/Asynchandler.js";
 import {z} from "zod"
 import nodemailer from "nodemailer";
 import dotenv from "dotenv"
+import Hackathon from "../models/hackathon.model.js";
+import teamModel, { TeamModel } from "../models/team.model.js";
+import { getOrganizationSocketId, io, orgSocketMap } from "../utils/socket.js";
 dotenv.config({
     path:'./.env'
 })
@@ -56,8 +59,7 @@ export const userSignUp=asyncHandler(async (req,res) => {
         })
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const token=jwt.sign({email},process.env.JWT_SECRET,{expiresIn:"6h"})
-
+ 
     const newUser=await UserModel.create({
         name,
         email:email, 
@@ -135,4 +137,55 @@ export const userLogout=asyncHandler(async (req,res) => {
     return res.status(200).json({
         message:"Logout Successfull"
     })
+})
+
+
+export const registerHackathon=asyncHandler(async (req,res) => {
+  const requestBody=z.object({
+    hackathonId:z.string().min(3).max(100),
+    teamMembers:z.array(z.string()).optional(),
+    teamDescription:z.string().optional(),
+    teamName:z.string().optional(),
+    role:z.string().optional()
+  })
+
+  const parsedData=requestBody.safeParse(req.body)
+
+  if (!parsedData.success) {
+    return res.status(400).json({ message: parsedData.error.errors });
+    }
+    const {hackathonId,teamMembers,teamDescription,teamName}=parsedData.data
+    const user=req.user
+    if(teamMembers){
+        const members=await UserModel.find({_id:{$in :teamMembers} })
+
+
+        if(members.length !== teamMembers.length){
+            return res.status(400)
+            .json({
+                message:"One of the team members ID are invalid"
+            })
+        }
+    }
+    const hackathon=await Hackathon.findById(hackathonId).populate("organizations")
+
+    if (!hackathon) {
+        return res.status(404).json({ message: "Hackathon not found" });
+      }
+    hackathon.push(participants._id)
+    const newTeam=await TeamModel.create({
+        name:teamName || "",
+        hackathon:hackathon,
+        description:teamDescription || "",
+        members:members || [],
+    })
+    const orgs=hackathon.organizations
+    io.to(orgs.socketId).emit("NewRegistrations",{newTeam})
+    console.log(`new member event fired to ${orgs} with ${newTeam} data`);
+    return res.status(200).json({
+        message:"Sucessfully participated in Hackathon",
+        newTeam
+    }
+    )
+
 })

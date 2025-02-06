@@ -51,4 +51,4 @@ const TeamSchema = new mongoose.Schema({
   
 },{timestamps:true});
 
-export default mongoose.model('teams', TeamSchema);
+export const TeamModel=mongoose.model('teams', TeamSchema);
