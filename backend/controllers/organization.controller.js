@@ -1,8 +1,7 @@
 import Organization from "../models/organization.model.js";
 import { asyncHandler } from "../utils/Asynchandler.js"
 import {z} from "zod";
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+
 import Hackathon from "../models/hackathon.model.js";
 import { io , getReceiverSocketId , userSocketMap } from "../utils/socket.js";
 

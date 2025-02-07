@@ -6,6 +6,7 @@ import cors from "cors"
 import { useroutes } from "./routes/user-routes.js"
 import organizationRoutes from "./routes/organization.routes.js"
 import { app } from "./utils/socket.js"
+import teamRoutes from "./routes/team.routes.js";
 
 import nodemailer from "nodemailer";
 
@@ -24,3 +25,4 @@ app.use(cors({
   }));
 app.use('/user',useroutes)
 app.use('/organization',organizationRoutes)
+app.use('/team',teamRoutes)

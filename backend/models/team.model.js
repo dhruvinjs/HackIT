@@ -8,7 +8,8 @@ const TeamSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    maxlength: 1000
+    maxlength: 1000,
+    required : true,
   },
   logo: {
     type: String,
@@ -16,7 +17,7 @@ const TeamSchema = new mongoose.Schema({
   hackathon: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'hackathons',
-    required: true
+    required : true
   },
   members: [
     {
@@ -36,7 +37,7 @@ const TeamSchema = new mongoose.Schema({
   ],
   invitations: [
     {
-      email: { type: String, required: true },
+      receiversId: { type: mongoose.Schema.Types.ObjectId, required: true },
       status: {
         type: String,
         enum: ['pending', 'accepted', 'declined'],
@@ -47,7 +48,7 @@ const TeamSchema = new mongoose.Schema({
         default: Date.now
       }
     }
-  ],
+  ]
   
 },{timestamps:true});
 
