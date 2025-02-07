@@ -4,6 +4,7 @@ import {z} from "zod";
 
 import Hackathon from "../models/hackathon.model.js";
 import { io , getReceiverSocketId , userSocketMap } from "../utils/socket.js";
+import { TeamModel } from "../models/team.model.js";
 
 const objectIdSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format");
 
@@ -162,4 +163,73 @@ export const hostHackathon = asyncHandler(async(req,res)=>{
     }
 
     return res.status(200).json({message : "Hackathon Hosted.",hackathon , org});
+})
+export const getHackathons = asyncHandler(async(req,res)=>{
+    const orgId = req.params.orgId;
+
+    const org = await Organization.findById(orgId);
+    if(!org){
+        return res.status(404).json({message : "Organization not found."});
+    }
+    return res.status(20).json({hackathons : org.hackathonsOrangized}) 
+})
+
+export const assignMentor = asyncHandler(async(req,res)=>{
+    const {mentorId , teamId} = req.body;
+    const orgId = req.params.orgId;
+
+    if(!mentorId ){
+        return res.status(400).json({message : "Mentor Id requried."});
+    }
+    if(!teamId ){
+        return res.status(400).json({message : "Mentor Id requried."});
+    }
+
+    const org = await Organization.findById(orgId);
+    if(!org){
+        return res.status(404).json({message : "Organization not found."});
+    }
+
+    const team = await TeamModel.findById(teamId);
+    if(!team){
+        return res.status(404).json({message : "Team not found."});
+    }
+
+    const isMentorPresent = org.members.some(member => member.user === mentorId);
+    if(!isMentorPresent){
+        return res.status(400).json({message:"Mentor doesn't belong to organization."})
+    }
+
+    team.mentor = mentorId;
+
+    return res.status(200).json({message : "Mentor Assigned" , team});
+})
+
+export const getMentors = asyncHandler(async(req,res)=>{
+    const orgId = req.params.orgId;
+
+    const org = await Organization.findById(orgId);
+
+    if(!org){
+        return res.status(404).json({message : "Oragnization not found."});
+    }
+
+    let mentors = org.members.filter((mem) =>{
+        return mem.role === "mentor";
+    })
+    if(mentors.length === 0){
+        return res.status(404).json({message : "No mentor found."});
+    }
+    return res.status(200).json({mentors});
+})
+
+export const getTeamsForHack = asyncHandler(async(req,res)=>{
+    const hackId = req.params.hackId;
+
+    const teams = await TeamModel.find({hackathon : hackId});
+    if(!teams){
+        return res.status(404).json({message : "No Teams Found."});
+    }
+
+    return res.status(200).json({teams});
 })

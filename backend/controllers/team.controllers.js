@@ -110,7 +110,6 @@ export const sendMessage = asyncHandler(async(req,res)=>{
             console.log(`Emitted recieveMessage event to user: ${userId} , socketId ; ${getReceiverSocketId(userId)}`);
         }
     }
-
     return res.status(200).json({message : "Message send" , chat});
 })
 

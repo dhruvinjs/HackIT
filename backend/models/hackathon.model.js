@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const hackathonSchema = mongoose.Schema({
+const hackathonSchema = new mongoose.Schema({
     title:{
         type:String,
         required:true,

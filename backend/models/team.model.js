@@ -48,7 +48,11 @@ const TeamSchema = new mongoose.Schema({
         default: Date.now
       }
     }
-  ]
+  ],
+  mentor:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"users"
+  }
   
 },{timestamps:true});
 

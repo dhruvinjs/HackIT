@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const UserSchema = mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     name : {
         type:String,
         required:true,
@@ -64,9 +64,9 @@ const UserSchema = mongoose.Schema({
     },
     role:{
         type:String,
-        enum:["admin","participant" , "organizer" , "mentor","judge"],
+        enum:["admin","participant" , "organizer" ,"judge"],
         default:"participant"
     }
-    
+    //mentor will be an normal user , but will play an role of mentor for a specific org when the organizer will add him as an member.
 },{timestamps:true})
 export const UserModel = mongoose.model("users" , UserSchema);
