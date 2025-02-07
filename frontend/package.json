@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.0.3",
     "flyonui": "^1.3.0",
+    "framer-motion": "^12.4.1",
     "gsap": "^3.12.7",
     "lucide-react": "^0.474.0",
     "react": "^19.0.0",
