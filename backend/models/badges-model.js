@@ -1,16 +1,20 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const BadgeSchema=new mongoose.Schema({
     users:[
         {type:mongoose.Schema.Types.ObjectId,ref:'users'}
     ],
-    types:{
+    type:{
         type:String,
         enum:["bronze","silver","gold","diamond"]
     },
+
     specialBadges:[
        { 
         name:{
+            type:String
+        },
+        logo:{
             type:String
         },
         orgs:{

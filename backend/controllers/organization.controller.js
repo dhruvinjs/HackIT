@@ -1,12 +1,10 @@
 import Organization from "../models/organization.model.js";
 import { asyncHandler } from "../utils/Asynchandler.js"
 import {z} from "zod";
-
 import Hackathon from "../models/hackathon.model.js";
 import { io , getReceiverSocketId , userSocketMap } from "../utils/socket.js";
 import { TeamModel } from "../models/team.model.js";
-
-const objectIdSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format");
+import { objectIdSchema } from "./team.controllers.js";
 
 export const createOrganization = asyncHandler(async(req,res)=>{
     const requestBody = z.object({

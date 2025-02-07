@@ -5,11 +5,11 @@ import { asyncHandler } from "../utils/Asynchandler.js";
 import {z} from "zod"
 import { io , getReceiverSocketId , userSocketMap } from "../utils/socket.js";
 
-const objectIdSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format");
+export const objectIdSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format");
 
 export const createTeam = asyncHandler(async(req,res)=>{
     const {name ,leaderId , description , logo ,hackathon} = req.body;
-
+    // Note LeaderId is user._id
     const teamExists = await TeamModel.findOne(name);
     if(teamExists){
         return res.status(400).json({message : "Team Name already in use."});
