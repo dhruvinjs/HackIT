@@ -1,0 +1,10 @@
+
+export { default as Navbar } from './Navbar'
+export { default as Contact } from './Contact'
+export { default as FAQ } from './FAQ'
+export { default as Footer } from './Footer'
+export { default as Feature } from './Feature'
+export { default as Hero } from './Hero'
+export { default as Pricing } from './Pricing'
+export { default as QACompo } from './QACompo'
+export { default as Work } from './Work'

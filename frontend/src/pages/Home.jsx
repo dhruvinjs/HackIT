@@ -1,13 +1,5 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
-import Hero from '../components/Hero'
-import Feature from '../components/Feature'
-import FAQ from '../components/FAQ'
-import Pricing from '../components/Pricing'
-import Contact from '../components/Contact'
-import Work from '../components/Work'
-
+import { Navbar, Footer, Hero, Feature, FAQ, Pricing, Contact, Work } from '../components'
 function Home() {
   return (
     <div>

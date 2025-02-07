@@ -3,7 +3,7 @@ import React from 'react';
 function Hero() {
     return (
         <div className="min-h-screen flex flex-1 w-full flex-col items-center justify-center text-center px-4 py-10 bg-black">
-            <a href=""
+            <a href="#"
                 className="my-16 border border-white-700 dark:border-gray-300 rounded-lg py-2 px-4 text-white-400 dark:text-gray-300 text-sm mb-5 transition duration-300 ease-in-out hover:text-gray-500 dark:hover:text-gray-400">
                 Forget about spending hundreds of $
             </a>
@@ -22,9 +22,9 @@ function Hero() {
             </h2>
             <div className='flex  sm:flex-row gap-5 mt-8 md:mt-4'>
                 <button className="bg-blue-500 text-white rounded-xl  font-medium px-4 py-3 sm:mt-10 transition"
-                    href="">Get started</button>
+                    href="#">Get started</button>
                 <button className="bg-white text-black rounded-xl font-medium px-4 py-3 sm:mt-10 hover:bg-orange-500  transition"
-                    href="">Learn more</button>
+                    href="#">Learn more</button>
             </div>
         </div>
     );
