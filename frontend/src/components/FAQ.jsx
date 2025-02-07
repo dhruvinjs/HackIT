@@ -1,6 +1,8 @@
 import React from 'react'
+import { useState } from 'react';
 import { QACompo } from "./";
 function FAQ() {
+    const [activeIndex, setActiveIndex ]=useState(null);
     const QA=[
         {
             id:1,
@@ -52,7 +54,7 @@ function FAQ() {
                     <div className="md:col-span-4">
                         <div className="hs-accordion-group divide-y divide-gray-200 dark:divide-neutral-700 my-2">
                             {QA && (QA.map((qacompo)=>(
-                                <QACompo key={qacompo.id} qacompo={qacompo}/>
+                                <QACompo key={qacompo.id} activeIndex={activeIndex} setActiveIndex={setActiveIndex} qacompo={qacompo}/>
                             )))}
                         </div>
                     </div>
