@@ -9,8 +9,8 @@ function Contact() {
                 <div class="container flex flex-col min-h-screen px-6 py-12 mx-auto">
                     <div class="flex-1 lg:flex lg:items-center lg:-mx-6">
                         <div class="text-white lg:w-1/2 lg:mx-6">
-                        <h1 class="text-4xl font-bold capitalize lg:text-5xl mb-20">Contact Us</h1>
-                            <h1 class="text-2xl font-semibold capitalize lg:text-3xl">Get a quote</h1>
+                        <h1 class="text-4xl font-bold capitalize lg:text-5xl">Contact Us</h1>
+                            {/* <h1 class="text-2xl font-semibold capitalize lg:text-3xl">Get a quote</h1> */}
 
                             <p class="max-w-xl mt-6">Ask us everything and we would love to hear from you</p>
 
@@ -77,7 +77,7 @@ function Contact() {
                         </div>
 
                         <div class="mt-8 lg:w-1/2 lg:mx-6">
-                            <div class="w-full px-8 py-10 mx-auto overflow-hidden bg-white shadow-2xl rounded-xl dark:bg-black lg:max-w-xl">
+                            <div class="w-full px-8 py-10 mx-auto overflow-hidden bg-white rounded-xl dark:bg-black lg:max-w-xl">
                                 <h1 class="text-xl font-medium text-gray-700 dark:text-gray-200">Contact form</h1>
 
                                 <form class="mt-4">

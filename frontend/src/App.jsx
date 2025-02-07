@@ -3,15 +3,11 @@ import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import SignupPage from './pages/Signup'
 import Login from './pages/Login'
-
+import { AllRoutes } from './routes/AllRoutes';
 function App() {
   return (
     <div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      <AllRoutes />
     </div>
   )
 }

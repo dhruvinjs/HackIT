@@ -7,7 +7,7 @@ function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md  md:border text-white border-gray-100 bg-[#0e1111] py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg ${
+      className={`fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md  md:border text-white border-gray-100 bg-[#0e1111] md:py-1 py-2 shadow backdrop-blur-lg md:top-3 md:rounded-2xl lg:max-w-screen-lg ${
         isOpen ? "" : "border-b"
       }`}
     >
@@ -60,13 +60,13 @@ function Navbar() {
           {/* Desktop Buttons */}
           <div className="hidden md:flex items-center justify-end gap-3">
             <Link
-              className="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
+              className="hidden items-center justify-center rounded-xl bg-white px-3 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
               to="/signup"
             >
               Sign Up
             </Link>
             <Link
-              className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-blue-500"
+              className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-blue-500"
               to="/login"
             >
               Login
