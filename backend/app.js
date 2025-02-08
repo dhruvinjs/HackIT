@@ -9,6 +9,7 @@ import { app } from "./utils/socket.js"
 import teamRoutes from "./routes/team.routes.js";
 
 import nodemailer from "nodemailer";
+import passport from "passport"
 
 async function createTestAccount() {
     const testAccount = await nodemailer.createTestAccount();
@@ -16,7 +17,7 @@ async function createTestAccount() {
 }
 
 // createTestAccount();
-
+app.use(passport.initialize())
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
