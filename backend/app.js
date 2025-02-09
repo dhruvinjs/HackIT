@@ -24,6 +24,6 @@ app.use(cors({
     origin: 'http://localhost:5173',
     credentials:true,
   }));
-app.use('/user',useroutes)
-app.use('/organization',organizationRoutes)
-app.use('/team',teamRoutes)
+app.use('/api/user',useroutes)
+app.use('/api/organization',organizationRoutes)
+app.use('/api/team',teamRoutes)

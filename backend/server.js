@@ -12,7 +12,7 @@ server.listen(port,()=>{
     console.log(`Server is listening on ${port}`);
 })
 const connectDb= () => {
-    mongoose.connect(process.env.MONGO_URL)
+    mongoose.connect("mongodb+srv://testuser:testuser@cluster0.c6njz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
     .then(()=>console.log('Connected to mongo DB'))
     .catch(err=>console.log(err))
 }

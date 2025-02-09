@@ -147,7 +147,8 @@ export const userLogin=asyncHandler(async (req,res) => {
     res.cookie("token",token,options)
 
     return res.status(200).json({
-        message:"Login sucessfull"
+        message:"Login sucessfull",
+        user
     })
 })
 
@@ -191,4 +192,8 @@ export const registerHackathon=asyncHandler(async (req,res) => {
     }
     )
 
+})
+
+export const checkAuth = asyncHandler(async(req,res)=>{
+    return res.status(200).json(req.user);
 })
