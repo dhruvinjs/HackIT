@@ -1,11 +1,11 @@
 import React from 'react'
-import { Navbar, Footer, Hero, Feature, FAQ, Pricing, Contact, Work, SampleAcc } from '../components'
+import { Navbar, Footer, Hero, Feature, Pricing, Contact, Work, SampleAcc } from '../components'
 function Home() {
   return (
     <div>
       <Navbar />
       <Hero />
-      <Feature />
+      {/* <SampleFeatures /> */}
       <Work/>
       <Pricing/>
       <SampleAcc/>

@@ -1,136 +1,105 @@
-import React from 'react'
+"use client"
 
-function Pricing() {
-    return (
-        <div>
-            <div className="pt-5 dark:bg-[#151515]" id="pricing">
-                <div className="mx-auto pb-20 mt-4 max-w-7xl px-6 lg:px-8">
-                    <div className="mx-auto max-w-4xl text-center">
-                        <h1 className="text-2xl font-semibold leading-7 text-indigo-400">Pricing</h1>
-                        <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">Whether it's just you, or your entire
-                            team - we've got you covered.</p>
-                    </div>
-                    <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-300">Choose the product that works best</p>
-                    <div className="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                        <div className="ring-1 ring-white/10 rounded-3xl p-8 xl:p-10">
-                            <div className="flex items-center justify-between gap-x-4">
-                                <h2 id="product1" className="text-2xl font-semibold leading-8 text-white">Starter</h2>
-                            </div>
-                            <p className="mt-4 text-sm leading-6 text-gray-300">Product details for Starter</p>
-                            <p className="mt-6 flex items-baseline gap-x-1">
-                                <span className="text-4xl font-bold tracking-tight text-white">₹ 80000/</span><span className="text-xl font-semibold leading-6 text-gray-300">event</span>
-                            </p>
-                            <a href="/order" aria-describedby="product1"
-                                className="bg-white/10 text-white hover:bg-white/20 focus-visible:outline-white mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-offset-2">Get Started</a>
-                            <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-300 xl:mt-10">
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg> Up to 100 participants</li>
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg> Basic analytics </li>
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg>Email Support</li>
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg>Standard features </li>
-                            </ul>
-                        </div>
+import React from "react";
+import { motion } from "framer-motion";
+import { Check, ChevronRight } from "lucide-react";
 
-                        <div className="bg-white/5 ring-2 ring-indigo-500 rounded-3xl p-8 xl:p-10">
-                            <div className="flex items-baseline justify-between gap-x-4">
-                                <h2 id="product2" className="text-2xl font-semibold leading-8 text-white">Pro</h2>
-                                <p className="rounded-full bg-indigo-500 px-2.5 py-1 text-xs font-semibold leading-5 text-white">Most popular</p>
-                            </div>
-                            <p className="mt-4 text-sm leading-6 text-gray-300">The most popular choice. Product details for Pro</p>
-                            <p className="mt-6 flex items-baseline gap-x-1">
-                                <span className="text-4xl font-bold tracking-tight text-white">₹ 150000/</span><span className="text-xl font-semibold leading-6 text-gray-300">event</span>
-                            </p>
-                            <a href="/order" aria-describedby="product2"
-                                className="bg-indigo-500 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline-indigo-500 mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">Get Started</a>
-                            <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-300 xl:mt-10">
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg> Up to 500 participants </li>
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg>Advanced analytics </li>
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg>Priority support </li>
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg> Custom branding </li>
-                            </ul>
-                        </div>
+const pricingPlans = [
+  {
+    name: "Starter",
+    price: "₹80,000",
+    period: "event",
+    description: "Perfect for small events and beginners",
+    features: ["Up to 100 participants", "Basic analytics", "Email support", "Standard features"],
+    cta: "Get Started",
+    popular: false,
+  },
+  {
+    name: "Pro",
+    price: "₹150,000",
+    period: "event",
+    description: "Ideal for medium-sized events and growing businesses",
+    features: ["Up to 500 participants", "Advanced analytics", "Priority support", "Custom branding"],
+    cta: "Get Started",
+    popular: true,
+  },
+  {
+    name: "Enterprise",
+    price: "₹250,000",
+    period: "event",
+    description: "For large-scale events and organizations",
+    features: ["Unlimited participants", "Custom analytics", "24/7 dedicated support", "Custom integration"],
+    cta: "Get Started",
+    popular: false,
+  },
+];
 
-                        <div className="ring-1 ring-white/10 rounded-3xl p-8 xl:p-10">
-                            <div className="flex items-center justify-between gap-x-4">
-                                <h2 id="product3" className="text-2xl font-semibold leading-8 text-white">Enterprise</h2>
-                            </div>
-                            <p className="mt-4 text-sm leading-6 text-gray-300">Product details for Enterprise</p>
-                            <p className="mt-6 flex items-baseline gap-x-1">
-                                <span className="text-4xl font-bold tracking-tight text-white">₹ 250000/</span><span className="text-xl font-semibold leading-6 text-gray-300">event</span>
-                            </p>
-                            <a href="/order" aria-describedby="product3"
-                                className="bg-white/10 text-white hover:bg-white/20 focus-visible:outline-white mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">Get Started</a>
-                            <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-300 xl:mt-10">
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg>Unlimited participants </li>
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg> Custom analytics</li>
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg> 24/7 dedicated support </li>
-                                <li className="flex gap-x-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" className="h-6 w-5 flex-none text-white">
-                                    <path fillRule="evenodd"
-                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                        clipRule="evenodd"></path>
-                                </svg> Custom integration</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+const Pricing = () => {
+  return (
+    <section className="bg-gradient-to-b from-gray-900 to-gray-800 py-20" id="pricing">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl md:text-4xl font-bold text-white mb-4"
+          >
+            Pricing Plans
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl text-gray-300 max-w-2xl mx-auto"
+          >
+            Choose the perfect plan for your event, whether it's just you or your entire team.
+          </motion.p>
         </div>
-    )
-}
+        <div className="grid md:grid-cols-3 gap-8">
+          {pricingPlans.map((plan, index) => (
+            <motion.div
+              key={plan.name}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className={`bg-gray-800 rounded-lg p-8 shadow-lg ${plan.popular ? "ring-2 ring-indigo-500" : ""}`}
+            >
+              {plan.popular && (
+                <span className="bg-indigo-500 text-white text-sm font-semibold px-3 py-1 rounded-full uppercase mb-4 inline-block">
+                  Most Popular
+                </span>
+              )}
+              <h3 className="text-2xl font-bold text-white mb-4">{plan.name}</h3>
+              <div className="text-4xl font-bold text-white mb-2">
+                {plan.price}
+                <span className="text-xl font-normal text-gray-400">/{plan.period}</span>
+              </div>
+              <p className="text-gray-400 mb-6">{plan.description}</p>
+              <ul className="mb-8">
+                {plan.features.map((feature, i) => (
+                  <li key={i} className="flex items-center mb-3 text-gray-300">
+                    <Check className="w-5 h-5 mr-2 text-indigo-500" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <button
+                className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center ${
+                  plan.popular
+                    ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+                    : "bg-gray-700 hover:bg-gray-600 text-white"
+                }`}
+              >
+                {plan.cta}
+                <ChevronRight className="w-5 h-5 ml-2" />
+              </button>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
-export default Pricing
+export default Pricing;
