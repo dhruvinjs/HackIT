@@ -87,8 +87,8 @@ const SampleAcc = () => {
 
   return (
     <>
-      <section className="py-12 bg-[#0A2540] text-white sm:py-12 lg:py-16">
-        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <section className="py-12 bg-gradient-to-b from-[#1F2937] to-[#111827] text-white sm:py-12 lg:py-16">
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-white mb-8">
             Frequently Asked Questions
           </h2>

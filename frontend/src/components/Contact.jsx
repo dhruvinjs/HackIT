@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 function Contact() {
   return (
-    <section className="bg-[#0A2540] py-12">
+    <section className="bg-gradient-to-b from-gray-900 to-gray-800 py-12">
       <div className="container mx-auto px-6 lg:px-20">
         <div className="text-center mb-12">
           <p className="text-lg font-medium text-blue-500">Contact Us</p>
