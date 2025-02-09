@@ -1,5 +1,5 @@
 import e from "express";
-import {registerHackathon, updateProfile, userLogin, userLogout, userSignUp}  from "../controllers/user-controllers.js";
+import {checkAuth, registerHackathon, updateProfile, userLogin, userLogout, userSignUp}  from "../controllers/user-controllers.js";
 import passport from "passport";
 import { authProtection } from "../middlewares/authProtection.js";
 
@@ -23,4 +23,5 @@ useroutes.get(
   );
   useroutes.post('/update',authProtection,updateProfile)
   useroutes.post('/register',authProtection,registerHackathon)
+  useroutes.get('/checkAuth' , authProtection , checkAuth)
 export {useroutes}
