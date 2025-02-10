@@ -5,6 +5,7 @@ import Hackathon from "../models/hackathon.model.js";
 import { io , getReceiverSocketId , userSocketMap } from "../utils/socket.js";
 import { TeamModel } from "../models/team.model.js";
 import { objectIdSchema } from "./team.controllers.js";
+import { diamondBadge } from "../utils/Badges.js";
 
 export const createOrganization = asyncHandler(async(req,res)=>{
     const requestBody = z.object({
@@ -232,4 +233,66 @@ export const getTeamsForHack = asyncHandler(async(req,res)=>{
     }
 
     return res.status(200).json({teams});
+})
+
+export const declareWinners=asyncHandler(async (req,res) => {
+    const requestBody=z.object({
+        hackathonId:z.string().min(3).max(100),
+        winners:z.array(objectIdSchema),
+        prizeAmt: z.number().gt(0, { message: "Prize amount must be greater than 0" })
+    })
+
+    const parsedData=requestBody.safeParse(req.body)
+    if(!parsedData.success){
+        return res.status(400).json({message:parsedData.error.errors})
+    }
+    const {hackathonId,winners,prizeAmt}=parsedData.data
+
+    const hackathon=await Hackathon.findById(hackathonId)
+    if(!hackathon)
+    {return res.status(404).json({message:"Sorry Hackathon not found"})}
+    
+
+    hackathon.results.winners.team=winners
+    hackathon.results.winners.prizeAmt=prizeAmt
+    await hackathon.save()
+    await diamondBadge(winners._id)
+    
+  for (const users in userSocketMap) {
+    io.to(getReceiverSocketId(users)).emit('winner-declared',{winners})
+    console.log(`Winner event fired to ${users}`);
+}  
+    return res.status(200).json({
+        message:"Winner declared successfully"
+    })
+})
+
+
+export const declareRunnersup=asyncHandler(async (req,res) => {
+    const requestBody=z.object({
+        hackathonId:z.string().min(3).max(100),
+        runnersUp:z.array(objectIdSchema),
+        prizeAmt:z.number().gt(0,{message:"Prize amt should be greater than"})
+    })
+
+    const parsedData=requestBody.safeParse(req.body)
+    if(!parsedData.success){
+        return res.status(400).json({message:parsedData.error.errors})
+    }
+    const {hackathonId,runnersUp,prizeAmt}=parsedData.data
+
+    const hackathon=await Hackathon.findById(hackathonId)
+    if(!hackathon)
+    {return res.status(404).json({message:"Sorry Hackathon not found"})}
+    
+    hackathon.results.runnerup.team=runnersUp
+    hackathon.results.runnerup.prizeAmt=prizeAmt
+    await hackathon.save()
+    for (const users in userSocketMap) {
+        io.to(getReceiverSocketId(users)).emit('runnersup-declared',{winners})
+        console.log(`RunnerUp event fired to ${users}`);
+    }  
+        return res.status(200).json({
+            message:"Runnerup declared successfully"
+        })  
 })
