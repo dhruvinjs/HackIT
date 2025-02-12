@@ -26,7 +26,7 @@ server.listen(port, () => {
 })
 <<<<<<< Updated upstream
 const connectDb= () => {
-    mongoose.connect("mongodb+srv://jitubhai8928:IOtDzijT2f1E26Lo@cluster0.vmkxp.mongodb.net/HackIT")
+    mongoose.connect(mongoUrl)
     .then(()=>console.log('Connected to mongo DB'))
     .catch(err=>console.log(err))
 =======
@@ -36,6 +36,8 @@ const connectDb = () => {
         .catch(err => console.log(err))
 >>>>>>> Stashed changes
 }
+
+const mongoUrl=process.env.MONGO_URL
 
 
 connectDb()
