@@ -4,12 +4,6 @@ const UserSchema = new mongoose.Schema({
     name : {
         type:String,
         required:true,
-        unique : true,
-    },
-    googleId:{
-        type:String,
-        unique:true,
-        required:true
     },
     email:{
         type:String,
@@ -48,11 +42,11 @@ const UserSchema = new mongoose.Schema({
     ],
     dob:{
         type:String,
-        required:true,
+        // required:true,
     },
     collegeName:{
         type:String,
-        required:true,
+        // required:true,
     },
     githubProfile:{
         type:String,

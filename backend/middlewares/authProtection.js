@@ -2,7 +2,7 @@ import { UserModel } from "../models/user.model.js";
 import { asyncHandler } from "../utils/Asynchandler.js";
 import jwt from "jsonwebtoken"
 export const authProtection = asyncHandler(async(req,res,next)=>{
-    const token = req.cookie.token;
+    const token = req.cookies.token;
     if(!token){
         return res.status(403).json({
             message: "Unauthenticated user."

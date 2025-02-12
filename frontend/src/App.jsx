@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { AllRoutes } from './routes/AllRoutes';
 import { useAuthStore } from './store/useAuthStore';
+import { Toaster } from 'react-hot-toast';
 function App() {
   const { checkAuth, authUser } = useAuthStore();
 

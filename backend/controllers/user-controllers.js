@@ -20,31 +20,37 @@ dotenv.config({
 
 export const userSignUp=asyncHandler(async (req,res) => {
 
-    console.log("USer signup clicked")
-    const requestBody=z.object({
-        name:z.string().min(3).max(100),
-        email:z.string().email("Invalid format"),
-        password:z.string().min(6,"Password must have 6 characters").
-        max(100,"Password must have only 100 characters")
-        .regex(/[A-Z]/,"Password Must have one uppercase character")
-        .regex(/[!@#$%^&*(),.?":{}|<>]/,"Password should contain one special character"),
-        })
+    // const requestBody=z.object({
+    //     name:z.string().min(3).max(100),
+    //     email:z.string().email("Invalid format"),
+    //     password:z.string().min(6,"Password must have 6 characters").
+    //     max(100,"Password must have only 100 characters")
+    //     .regex(/[A-Z]/,"Password Must have one uppercase character")
+    //     .regex(/[!@#$%^&*(),.?":{}|<>]/,"Password should contain one special character"),
+    //     })
     
    
-    const parsedData = requestBody.safeParse(req.body);
+    // const parsedData = requestBody.safeParse(req.body);
 
-    if (!parsedData.success) {
-        return res.status(400).json({ message: parsedData.error.errors });
+    // if (!parsedData.success) {
+    //     return res.status(400).json({ message: parsedData.error.errors });
+    // }
+
+    const { name, email, password } = req.body;
+    if(!name || !email || !password) {
+        return res.status(400).json({message : "All fields are required."})
     }
 
-    const { name, email, password } = parsedData.data;
     const existingUser=await UserModel.findOne({email:email})
+    console.log("USer signup clicked " , existingUser);
+
     if(existingUser){
         return res.status(400)
         .json({
             message:"User Already Exists"
         })
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
  
     const newUser=await UserModel.create({
@@ -57,8 +63,6 @@ export const userSignUp=asyncHandler(async (req,res) => {
      return res.status(201).json({ message: "User registered! Check your email for verification.",
         user:newUser
       });
-  
-
 })
 
 
@@ -182,9 +186,6 @@ export const registerHackathon=asyncHandler(async (req,res) => {
       }
     hackathon.push(participants._id)
     
-    const {leagueMessage}=await assignBadges(user)
-    
-    const orgs=hackathon.organizations
     io.to(orgs.socketId).emit("NewRegistrations",{user})
     console.log(`new member event fired to ${orgs} with ${user} data`);
     return res.status(200).json({

@@ -30,7 +30,7 @@ export const useAuthStore = create((set,get)=>({
             set({authUser : response.data.user})
             toast.success(`Welcome ${details.name}.`)
         } catch (error) {
-            console.log('Error in register : ',error)
+            console.log('Error in signup : ',error.message)
             toast.error(error.response.data.message)
             set({authUser:null})
         }finally{
