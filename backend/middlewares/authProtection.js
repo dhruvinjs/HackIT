@@ -1,5 +1,5 @@
-import { UserModel } from "../models/user.model";
-import { asyncHandler } from "../utils/Asynchandler";
+import { UserModel } from "../models/user.model.js";
+import { asyncHandler } from "../utils/Asynchandler.js";
 import jwt from "jsonwebtoken"
 export const authProtection = asyncHandler(async(req,res,next)=>{
     const token = req.cookie.token;

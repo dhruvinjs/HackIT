@@ -1,11 +1,11 @@
 import { Badge } from '../models/badges-model.js'
 import { UserModel } from '../models/user.model.js'
-import asynchandler from './Asynchandler.js'
-export const assignBadges=asynchandler(async (user) => {
+import {asyncHandler} from './Asynchandler.js'
+export const assignBadges=asyncHandler(async (userId) => {
     if(!badge){
         throw new Error("Provide Badge in Utility Function")
     }
-    const user=await UserModel.findOne(user)
+    const user=await UserModel.findOne(userId)
     if(!user){
         return res.status(400)
         .json({mesage:"user not found in Badge service"})
@@ -43,7 +43,7 @@ export const assignBadges=asynchandler(async (user) => {
 })
 
 
-export const diamondBadge=asynchandler(async(teamId)=>{
+export const diamondBadge=asyncHandler(async(teamId)=>{
   const team=await TeamModel.findById(teamId).populate('members.membersId')
   //Directly extracting the members id in which there are id of each users
   // will now map thrugh it and update it

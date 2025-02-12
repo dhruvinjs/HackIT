@@ -1,3 +1,4 @@
+import { asyncHandler } from "../utils/Asynchandler.js";
 export const organizerProtected = asyncHandler(async(req , res , next)=>{
     const user = req.user;
     if(!user){

@@ -7,8 +7,8 @@ import {z} from "zod"
 import nodemailer from "nodemailer";
 import dotenv, { parse } from "dotenv"
 import Hackathon from "../models/hackathon.model.js";
-import teamModel, { TeamModel } from "../models/team.model.js";
-import { getOrganizationSocketId, io, orgSocketMap } from "../utils/socket.js";
+import  { TeamModel } from "../models/team.model.js";
+import {  io } from "../utils/socket.js";
 import { assignBadges } from "../utils/Badges.js";
 import { objectIdSchema } from "./team.controllers.js";
 import { resolveContent } from "nodemailer/lib/shared/index.js";
@@ -19,6 +19,8 @@ dotenv.config({
 })
 
 export const userSignUp=asyncHandler(async (req,res) => {
+
+    console.log("USer signup clicked")
     const requestBody=z.object({
         name:z.string().min(3).max(100),
         email:z.string().email("Invalid format"),
