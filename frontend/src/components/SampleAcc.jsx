@@ -87,7 +87,7 @@ const SampleAcc = () => {
 
   return (
     <>
-      <section className="py-12 bg-gradient-to-b from-[#1F2937] to-[#111827] text-white sm:py-12 lg:py-16">
+      <section className="py-12 bg-[#151515]  text-white sm:py-12 lg:py-16">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-white mb-8">
             Frequently Asked Questions
@@ -96,7 +96,7 @@ const SampleAcc = () => {
             {faqs.map((faq, index) => (
               <div key={faq.id} className="py-6">
                 <motion.button
-                  className="w-full flex justify-between items-center text-left font-semibold text-white focus:outline-none px-4 py-2 rounded-lg hover:bg-[#173E5A] transition-colors"
+                  className="w-full flex justify-between items-center text-left font-semibold text-white focus:outline-none px-4 py-2 rounded-lg hover:bg-black transition-colors"
                   onClick={() => toggleAccordion(index)}
                   whileHover={{ scale: 1.03 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
