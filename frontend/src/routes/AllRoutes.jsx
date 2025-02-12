@@ -3,7 +3,10 @@ import { Home, Login, Signup, UserDashBoard, ProfilePage, UpdateProfile,Organise
 import { useAuthStore } from "../store/useAuthStore";
 
 export const AllRoutes = () => {
-  const {authUser} = useAuthStore();
+  const {authUser,isCheckingAuth} = useAuthStore();
+  if(isCheckingAuth){
+    return <div>Loading.....</div>
+  }
   return (
     <Routes>
       <Route path="/" element={<Home />} />
