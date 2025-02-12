@@ -1,3 +1,10 @@
+import UserDashBoard from './UserDashBoard'
+
 export { default as Home } from './Home'
 export { default as Login } from './Login'
 export { default as Signup } from './Signup'
+export { default as UserDashBoard } from './UserDashBoard.jsx'
+export { default as ProfilePage } from './ProfilePage'
+export { default as UpdateProfile } from './UpdateProfile'
+export { default as RegisrationForm } from './RegisrationForm'
+export { default as OrganiserForm } from './OrganiserForm'
