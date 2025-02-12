@@ -40,6 +40,13 @@ export const userSignUp=asyncHandler(async (req,res) => {
     if(!name || !email || !password) {
         return res.status(400).json({message : "All fields are required."})
     }
+    const nameUsed = await UserModel.findOne({name:name})
+    if(nameUsed){
+        return res.status(400)
+        .json({
+            message:"Name already in use."
+        }) 
+    }
 
     const existingUser=await UserModel.findOne({email:email})
     console.log("USer signup clicked " , existingUser);
@@ -60,6 +67,14 @@ export const userSignUp=asyncHandler(async (req,res) => {
         
     }
     )
+    const token=jwt.sign({email},process.env.JWT_SECRET,{expiresIn:"6h"})
+    const options={
+        httpOnly:true,
+        secure:true,
+        sameSite:"strict",
+        maxAge:24 * 60 * 60 * 1000
+    }
+    res.cookie("token",token,options)
      return res.status(201).json({ message: "User registered! Check your email for verification.",
         user:newUser
       });
