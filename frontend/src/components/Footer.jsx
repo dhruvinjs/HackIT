@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-[#1F2937] to-[#111827] text-white">
+    <footer className="bg-[#151515] text-white">
       <div className="container px-6 py-8 mx-auto">
         <div className="flex flex-col items-center text-center">
           <a href="#" className="flex items-center space-x-2 hover:text-blue-500 text-4xl">

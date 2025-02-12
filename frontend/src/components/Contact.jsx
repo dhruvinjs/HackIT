@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 function Contact() {
   return (
-    <section className="bg-gradient-to-b from-gray-900 to-gray-800 py-12" id="contact">
+    <section className="bg-gradient-to-b bg-black py-20">
       <div className="container mx-auto px-6 lg:px-20">
         <div className="text-center mb-12">
           <p className="text-lg font-medium text-blue-500">Contact Us</p>
@@ -40,7 +40,7 @@ function Contact() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-[#1E2A47] shadow-lg rounded-lg p-8">
+          <div className="bg-black shadow-lg rounded-lg p-8">
             <h2 className="text-xl font-semibold text-white mb-6">Send us a Message</h2>
             <form className="space-y-6">
               <div>
@@ -50,7 +50,7 @@ function Contact() {
                 <input
                   type="text"
                   id="name"
-                  className="mt-2 w-full p-3 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-[#1E2A47] dark:border-gray-500 dark:text-white"
+                  className="mt-2 w-full p-3 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-[#151515] dark:border-gray-500 dark:text-white"
                   placeholder="Enter your name"
                 />
               </div>
@@ -61,7 +61,7 @@ function Contact() {
                 <input
                   type="email"
                   id="email"
-                  className="mt-2 w-full p-3 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-[#1E2A47] dark:border-gray-500 dark:text-white"
+                  className="mt-2 w-full p-3 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-[#151515] dark:border-gray-500 dark:text-white"
                   placeholder="Enter your email"
                 />
               </div>
@@ -72,7 +72,7 @@ function Contact() {
                 <textarea
                   id="message"
                   rows="4"
-                  className="mt-2 w-full p-3 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-[#1E2A47] dark:border-gray-500 dark:text-white"
+                  className="mt-2 w-full p-3 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-[#151515] dark:border-gray-500 dark:text-white"
                   placeholder="Write your message"
                 ></textarea>
               </div>

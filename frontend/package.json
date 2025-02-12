@@ -12,11 +12,13 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.0.3",
     "axios": "^1.7.9",
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.4.1",
     "gsap": "^3.12.7",
     "lucide-react": "^0.474.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
     "react-hot-toast": "^2.5.1",
     "react-router-dom": "^7.1.5",
     "socket.io-client": "^4.8.1",

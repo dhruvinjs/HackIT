@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
+import { boolean } from "zod";
 
 const hackathonSchema = new mongoose.Schema({
     title:{
@@ -26,6 +27,16 @@ const hackathonSchema = new mongoose.Schema({
     participants: [
         { type: mongoose.Schema.Types.ObjectId, ref: 'teams' }
     ],
+   results:{
+    winners:[{
+        team:{type:mongoose.Schema.Types.ObjectId, ref:'teams'},
+        prizeAmt:{type:Number}
+    }],
+    runnerup:[{
+        team:{type:mongoose.Schema.Types.ObjectId,ref:"teams"},
+        prizeAmt:{type:Number}//Runner up will have some price amt 
+    }]
+   },
     endDate: {
         type: Date,
         required: true

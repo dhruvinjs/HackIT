@@ -1,3 +1,4 @@
+import { Badge } from '../models/badges-model.js'
 import { UserModel } from '../models/user.model.js'
 import asynchandler from './Asynchandler.js'
 export const assignBadges=asynchandler(async (user) => {
@@ -40,3 +41,31 @@ export const assignBadges=asynchandler(async (user) => {
             }
     
 })
+
+
+export const diamondBadge=asynchandler(async(teamId)=>{
+  const team=await TeamModel.findById(teamId).populate('members.membersId')
+  //Directly extracting the members id in which there are id of each users
+  // will now map thrugh it and update it
+  if(!team){
+    throw new Error("team not found")
+  }
+ await Promise.all(
+  team.map(users=>{
+    const usersId=users.memberId._id || users.memberId
+    const badge=Badge.findOneAndUpdate({
+      users:usersId
+    },{
+      type:"diamond"
+    })
+   const user=UserModel.findByIdAndUpdate({_id:usersId},{
+      league:"diamond"
+    })
+    return Promise.all([user,badge])
+  })
+ )
+
+return {message:"User league updated to diamond"}
+})
+
+
