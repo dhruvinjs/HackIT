@@ -36,7 +36,7 @@ const pricingPlans = [
 
 const Pricing = () => {
   return (
-    <section className="bg-gradient-to-b from-gray-900 to-gray-800 py-20" id="pricing">
+    <section className="bg-gradient-to-b bg-black py-20" id="pricing">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <motion.h2
@@ -63,7 +63,7 @@ const Pricing = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={`bg-gray-800 rounded-lg p-8 shadow-lg ${plan.popular ? "ring-2 ring-indigo-500" : ""}`}
+              className={`bg-[#151515] rounded-lg p-8 shadow-lg ${plan.popular ? "ring-2 ring-indigo-500" : ""}`}
             >
               {plan.popular && (
                 <span className="bg-indigo-500 text-white text-sm font-semibold px-3 py-1 rounded-full uppercase mb-4 inline-block">
