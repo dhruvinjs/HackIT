@@ -14,20 +14,27 @@ import teamRoutes from "./routes/team.routes.js";
 
 
 dotenv.config({
-    path:'./.env'
+    path: './.env'
 })
 const port = process.env.PORT || 4000
 import nodemailer from "nodemailer";
 // import passport from "passport"
 import mongoose from "mongoose";
 // initializeSocket(server)
-server.listen(port,()=>{
+server.listen(port, () => {
     console.log(`Server is listening on ${port}`);
 })
+<<<<<<< Updated upstream
 const connectDb= () => {
     mongoose.connect("mongodb+srv://jitubhai8928:IOtDzijT2f1E26Lo@cluster0.vmkxp.mongodb.net/HackIT")
     .then(()=>console.log('Connected to mongo DB'))
     .catch(err=>console.log(err))
+=======
+const connectDb = () => {
+    mongoose.connect("mongodb+srv://testuser:testuser@cluster0.c6njz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+        .then(() => console.log('Connected to mongo DB'))
+        .catch(err => console.log(err))
+>>>>>>> Stashed changes
 }
 
 
@@ -38,12 +45,9 @@ app.use(e.json())
 app.use(cookieParser())
 app.use(cors({
     origin: 'http://localhost:5173',
-    credentials:true,
-  }));
+    credentials: true,
+}));
 
-app.use('/api/user',useroutes)
-app.use('/api/organization',organizationRoutes)
-app.use('/api/team',teamRoutes)
-app.get('/',async(req,res)=>{
-  res.send('Hitting default route')
-})
+app.use('/api/user', useroutes)
+app.use('/api/organization', organizationRoutes)
+app.use('/api/team', teamRoutes)
