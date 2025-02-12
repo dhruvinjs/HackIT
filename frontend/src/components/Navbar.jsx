@@ -9,7 +9,7 @@ const Navbar = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="relative bg-[#0A0F1D] sticky top-0 z-50">
+    <div className="relative bg-[#151515] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo with Computer Chip Icon */}
@@ -108,7 +108,7 @@ const Navbar = () => {
               href="#demo"
               className="bg-white text-[#0A0F1D] hover:bg-gray-100 block px-3 py-2 rounded-lg text-base font-medium"
             >
-              Get a Demo
+              Login
             </a>
           </div>
         </div>
