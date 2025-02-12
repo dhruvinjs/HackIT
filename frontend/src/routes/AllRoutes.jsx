@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Home, Login, Signup, UserDashBoard, ProfilePage, UpdateProfile,OrganiserForm,RegisrationForm } from '../pages'
-
+import { Home, Login, Signup, UserDashBoard, ProfilePage, UpdateProfile,OrganiserForm,RegisrationForm, Leaderboard } from '../pages'
 export const AllRoutes = () => {
   return (
     <Routes>
@@ -12,6 +11,7 @@ export const AllRoutes = () => {
       <Route path="/update" element={<UpdateProfile />} />
       <Route path="/register" element={<RegisrationForm />} />
       <Route path="/create" element={<OrganiserForm />} />
+      <Route path="/leaderboard" element={<Leaderboard />} />
     </Routes>
   );
 };
