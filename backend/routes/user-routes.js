@@ -1,5 +1,5 @@
 import e from "express";
-import {checkAuth, getActiveEvents, getParticipants, hostEvents, registerHackathon, updateProfile, userLogin, userLogout, userSignUp}  from "../controllers/user-controllers.js";
+import {checkAuth, getActiveEvents, getParticipants, hostEvents, registerEvents, registerHackathon, updateProfile, userLogin, userLogout, userSignUp}  from "../controllers/user-controllers.js";
 // import passport from "passport";
 import { authProtection } from "../middlewares/authProtection.js";
 
@@ -26,6 +26,6 @@ useroutes.post('/logout',authProtection,userLogout)
   useroutes.get('/checkAuth' , authProtection , checkAuth)
   useroutes.post('/hostEvent',authProtection,hostEvents)
   useroutes.get('/events',authProtection,getActiveEvents)
-  useroutes.get('/participants',authProtection,getParticipants)
-
+  useroutes.get('/participants',authProtection,getParticipants)  
+  useroutes.post('/apply',authProtection,registerEvents)
 export {useroutes}
