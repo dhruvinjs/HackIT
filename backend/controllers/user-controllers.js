@@ -5,7 +5,7 @@ import { asyncHandler } from "../utils/Asynchandler.js";
 import { z } from "zod"
 import dotenv, { parse } from "dotenv"
 
-import { io } from "../utils/socket.js";
+import { io ,userSocketMap,getReceiverSocketId} from "../utils/socket.js";
 import { EventModel } from "../models/event-model.js";
 
 dotenv.config({
@@ -13,9 +13,6 @@ dotenv.config({
 })
 
 export const userSignUp = asyncHandler(async (req, res) => {
-
-
-
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
         return res.status(400).json({ message: "All fields are required." })
@@ -163,7 +160,6 @@ export const hostEvents = asyncHandler(async (req, res) => {
         eventCategories,
         prizePool,
         description,
-        hostedBy,
         entryFee,
         maxTeamSize,
         participants,
@@ -180,7 +176,6 @@ export const hostEvents = asyncHandler(async (req, res) => {
         !eventType ||
         !eventCategories ||
         !description ||
-        !hostedBy ||
         !endDate ||
         !registrationDeadline ||
         !judges ||
@@ -198,7 +193,7 @@ export const hostEvents = asyncHandler(async (req, res) => {
         eventCategories,
         prizePool,
         description,
-        hostedBy,
+        hostedBy : req.user._id,
         entryFee,
         maxTeamSize,
         participants,
@@ -212,6 +207,11 @@ export const hostEvents = asyncHandler(async (req, res) => {
 
     user.eventsHosted.push(event._id)
     await user.save()
+    for(const userId in userSocketMap){
+        if(event.hostedBy != userId){
+            io.to(getReceiverSocketId(userId)).emit("newEvent",{event}) 
+        }
+    }
     return res.status(200).json({ messsage: "Event Created", event })
 
 })

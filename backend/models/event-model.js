@@ -19,7 +19,8 @@ const Event=new mongoose.Schema({
         },
         eventCategories:{
             type:String,
-            required:true
+            enum:["Hackathon" , "WorkShop" , "Webinar"],
+            default : "Hackathon"
         },
         prizePool:[{
         currency:{type:String,enum:["inr","usd"],default:"inr"},
