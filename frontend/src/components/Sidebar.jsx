@@ -9,6 +9,7 @@ import {
     ChevronRight,
     X
 } from 'lucide-react';
+import { useAuthStore } from "../store/useAuthStore";
 
 const Sidebar = ({ value: { isMenuOpen, setIsMenuOpen } }) => {
 
@@ -21,6 +22,7 @@ const Sidebar = ({ value: { isMenuOpen, setIsMenuOpen } }) => {
     };
 
 
+    const {Logout} = useAuthStore()
 
     const menuItems = [
         { icon: User, label: 'Profile', path: '/profile' },
@@ -28,8 +30,8 @@ const Sidebar = ({ value: { isMenuOpen, setIsMenuOpen } }) => {
         { icon: Target, label: 'My Rounds', path: '/rounds' },
     ];
 
-    const handleLogout = () => {
-        // Add logout logic here
+    const handleLogout = async() => {
+        await Logout()
         navigate('/');
     };
 

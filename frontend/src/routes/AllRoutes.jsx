@@ -12,8 +12,8 @@ export const AllRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/signup" element={authUser ? <Navigate to={"/"} /> : <Signup />} />
-      <Route path="/login" element={authUser ? <Navigate to={"/"} /> : <Login />} />
+      <Route path="/signup" element={authUser ? <Navigate to={"/dashboard"} /> : <Signup />} />
+      <Route path="/login" element={authUser ? <Navigate to={"/dashboard"} /> : <Login />} />
       <Route path="/dashboard" element={<UserDashBoard />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/update" element={<UpdateProfile />} />
@@ -22,6 +22,7 @@ export const AllRoutes = () => {
       <Route path="/history" element={<ParticipationHistory />} />
       <Route path="/friends" element={<Friends />} />
       <Route path="/chat" element={<ChatPage />} />
+      <Route path="/apply" element={<RegisrationForm />} />
     </Routes>
   );
 };

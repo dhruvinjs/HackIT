@@ -32,7 +32,7 @@ function OrganiserForm() {
 
     return (
         <div>
-            <Nav/>
+            <Nav />
             <div className="min-h-screen bg-black py-12 px-4 sm:px-6 lg:px-8">
                 <motion.div
                     initial="hidden"
@@ -48,8 +48,23 @@ function OrganiserForm() {
 
                         <form onSubmit={handleSubmit(onSubmit)} className="px-8 py-6 space-y-6">
                             <motion.div variants={fadeIn} className="space-y-6">
+                                <label className="block text-sm text-white mb-1">Title</label>
+                                <div className="relative">
+
+                                    <input
+                                        type="text"
+
+                                        className="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        placeholder="Enter The Title"
+                                    />
+                                </div>
                                 {/* Logo Upload Section */}
                                 <div className="flex flex-col items-center p-6 border-2 border-dashed border-gray-300 rounded-lg">
+
+
+
+
+
                                     <Upload className="w-8 h-8 text-white mb-2" />
                                     <input
                                         type="file"
@@ -90,6 +105,8 @@ function OrganiserForm() {
                                         </select>
                                     </div>
 
+
+
                                     <div>
                                         <label className="block text-sm font-medium text-white mb-2">
                                             <Lock className="inline-block w-4 h-4 mr-2" />
@@ -105,6 +122,14 @@ function OrganiserForm() {
                                     </div>
                                 </div>
 
+                                <div>
+                                    <label className="block text-sm font-medium text-white mb-2">
+                                        <Globe className="inline-block w-4 h-4 mr-2" />
+                                        Location
+                                    </label>
+                                    <input className='w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent' type="text" />
+                                </div>
+
                                 {/* Categories */}
                                 <div>
                                     <label className="block text-sm font-medium text-white mb-2">
@@ -112,7 +137,7 @@ function OrganiserForm() {
                                         Event Categories
                                     </label>
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                        {['Hackathon', 'Workshop', 'Competition', 'Conference', 'Webinar', 'Other'].map((category) => (
+                                        {['Hackathon', 'Workshop', 'Webinar'].map((category) => (
                                             <label key={category} className="flex items-center space-x-2">
                                                 <input
                                                     type="checkbox"
