@@ -12,17 +12,6 @@ export const AllRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-<<<<<<< Updated upstream
-      <Route path="/signup" element={authUser ? <Navigate to={"/"}/> :<Signup />} />
-      <Route path="/login" element={authUser ? <Navigate to={"/"}/> :<Login />} />
-      <Route path="/dashboard" element={!authUser ? <Navigate to={"/login"}/> :<UserDashBoard />} />
-      <Route path="/profile" element={!authUser ? <Navigate to={"/login"}/> :<ProfilePage />} />
-      <Route path="/update" element={!authUser ? <Navigate to={"/login"}/> :<UpdateProfile />} />
-      <Route path="/register" element={!authUser ? <Navigate to={"/login"}/> :<RegisrationForm />} />
-      <Route path="/create" element={!authUser ? <Navigate to={"/login"}/> :<OrganiserForm />} />
-      <Route path="/Web-Rtc" element={<VideoChatInterFace/>} />
-
-=======
       <Route path="/signup" element={authUser ? <Navigate to={"/"} /> : <Signup />} />
       <Route path="/login" element={authUser ? <Navigate to={"/"} /> : <Login />} />
       <Route path="/dashboard" element={<UserDashBoard />} />
@@ -33,7 +22,6 @@ export const AllRoutes = () => {
       <Route path="/history" element={<ParticipationHistory />} />
       <Route path="/friends" element={<Friends />} />
       <Route path="/chat" element={<ChatPage />} />
->>>>>>> Stashed changes
     </Routes>
   );
 };
