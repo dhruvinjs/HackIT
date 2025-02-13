@@ -251,9 +251,36 @@ export const hostEvents=asyncHandler(async (req,res) => {
 
 })
 
-export const getParticipants=asyncHandler(async (req,res) => {
+export const getActiveEvents=asyncHandler(async (req,res) => {
     const user=req.user 
+    const events=await EventModel.find({status:"upcoming"})
+    if(!events){
+        return res.status(201).json({message:"No Current events active"})
+    }
+    return res.status(200).json({success:true,events})
+
+
 })
+
+export const getParticipants=asyncHandler(async (req,res) => {
+    const {eventID}=req.params
+    if(!eventID){
+        return res.status(400).json({message:"Event id missing"})
+    }
+    const event = await EventModel.findById(eventId);
+    if (!event) {
+      res.status(404);
+      throw new Error("Event not found");
+    }
+  
+    // Count the participants using the length of the participants array
+    const participantCount = event.participants.length;
+    return res.status(200).json({
+        success: true,
+        participantCount,
+      });
+})
+
 export const registerEvents=asyncHandler(async (req,res) => {
     
 })

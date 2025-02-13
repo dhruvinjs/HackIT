@@ -95,8 +95,12 @@ const Event=new mongoose.Schema({
         ],
           location:{
             type:String,
-        }
-    
+          },
+          status:{
+            type:String,
+            enum:['active',"upcoming","completed"],
+            defualt:"upcoming"
+          }
 })
 
 export const EventModel=mongoose.model('event',Event)
