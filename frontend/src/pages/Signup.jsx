@@ -46,7 +46,6 @@ function Signup() {
           }
         setError(null);
         await signup(formData);
-
     }
 
     return (
