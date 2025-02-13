@@ -9,34 +9,25 @@ import { useroutes } from "./routes/user-routes.js"
 import organizationRoutes from "./routes/organization.routes.js"
 import { app } from "./utils/socket.js"
 import teamRoutes from "./routes/team.routes.js";
-
-
-
+// import passport from "passport"
+import nodemailer from "nodemailer";
+import mongoose from "mongoose";
 
 dotenv.config({
     path: './.env'
 })
+
+
+
 const port = process.env.PORT || 4000
-import nodemailer from "nodemailer";
-// import passport from "passport"
-import mongoose from "mongoose";
 // initializeSocket(server)
 server.listen(port, () => {
     console.log(`Server is listening on ${port}`);
 })
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 const connectDb= () => {
     mongoose.connect(mongoUrl)
     .then(()=>console.log('Connected to mongo DB'))
     .catch(err=>console.log(err))
-=======
-=======
->>>>>>> Stashed changes
-const connectDb = () => {
-    mongoose.connect("mongodb+srv://jitubhai8928:IOtDzijT2f1E26Lo@cluster0.vmkxp.mongodb.net/HackIT")
-        .then(() => console.log('Connected to mongo DB'))
-        .catch(err => console.log(err))
 }
 
 const mongoUrl=process.env.MONGO_URL
