@@ -25,16 +25,18 @@ server.listen(port, () => {
     console.log(`Server is listening on ${port}`);
 })
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 const connectDb= () => {
     mongoose.connect(mongoUrl)
     .then(()=>console.log('Connected to mongo DB'))
     .catch(err=>console.log(err))
 =======
+=======
+>>>>>>> Stashed changes
 const connectDb = () => {
-    mongoose.connect("mongodb+srv://testuser:testuser@cluster0.c6njz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+    mongoose.connect("mongodb+srv://jitubhai8928:IOtDzijT2f1E26Lo@cluster0.vmkxp.mongodb.net/HackIT")
         .then(() => console.log('Connected to mongo DB'))
         .catch(err => console.log(err))
->>>>>>> Stashed changes
 }
 
 const mongoUrl=process.env.MONGO_URL

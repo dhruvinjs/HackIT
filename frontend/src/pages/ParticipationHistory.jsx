@@ -48,7 +48,7 @@ const container = {
 function ParticipationHistory() {
   return (
     <div>
-      <Nav/>
+      <Nav />
       <div className="min-h-screen bg-black py-12 px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
