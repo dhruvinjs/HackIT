@@ -12,7 +12,7 @@ import {  io } from "../utils/socket.js";
 import { assignBadges } from "../utils/Badges.js";
 import { objectIdSchema } from "./team.controllers.js";
 import { resolveContent } from "nodemailer/lib/shared/index.js";
-
+import { EventModel } from "../models/event-model.js";
 
 dotenv.config({
     path:'./.env'
@@ -20,21 +20,7 @@ dotenv.config({
 
 export const userSignUp=asyncHandler(async (req,res) => {
 
-    // const requestBody=z.object({
-    //     name:z.string().min(3).max(100),
-    //     email:z.string().email("Invalid format"),
-    //     password:z.string().min(6,"Password must have 6 characters").
-    //     max(100,"Password must have only 100 characters")
-    //     .regex(/[A-Z]/,"Password Must have one uppercase character")
-    //     .regex(/[!@#$%^&*(),.?":{}|<>]/,"Password should contain one special character"),
-    //     })
-    
    
-    // const parsedData = requestBody.safeParse(req.body);
-
-    // if (!parsedData.success) {
-    //     return res.status(400).json({ message: parsedData.error.errors });
-    // }
 
     const { name, email, password } = req.body;
     if(!name || !email || !password) {
@@ -134,16 +120,7 @@ export const updateProfile=asyncHandler(async (req,res,next) => {
 
 
 export const userLogin=asyncHandler(async (req,res) => {
-    const authSchema=z.object({
-        email:z.string().email("Invalid format"),
-        })
-    const parsedData=authSchema.safeParse(req.body)
-    if(!parsedData.success){
-        return res.status(404).json({
-            message:parsedData.error.errors
-        })
-    }
-    const {email,password}=parsedData.data
+    const {email,password}=req.body
     const user=await UserModel.findOne({email:email})
     if(!user){
         return res.status(404).json({
@@ -210,4 +187,61 @@ export const registerHackathon=asyncHandler(async (req,res) => {
 
 export const checkAuth = asyncHandler(async(req,res)=>{
     return res.status(200).json(req.user);
+})
+
+export const hostEvents=asyncHandler(async (req,res) => {
+    const {
+        logo,
+        title,
+        eventType,
+        visibility,
+        eventCategories,
+        prizePool,
+        description,
+        hostedBy,
+        entryFee,
+        maxTeamSize,
+        participants,
+        endDate,
+        registrationDeadline,
+        judges,
+        submissions,
+        rules,
+        guidelines
+      } = req.body;
+      if (
+        !logo ||
+        !eventType ||
+        !eventCategories ||
+        !description ||
+        !hostedBy ||
+        !endDate ||
+        !registrationDeadline ||
+        !judges ||
+        !title
+      ) {
+        res.status(400);
+        throw new Error("Please provide all required fields");
+      }
+
+
+      const event = await EventModel.create({
+        logo,
+        eventType,
+        visibility,
+        eventCategories,
+        prizePool,
+        description,
+        hostedBy,
+        entryFee,
+        maxTeamSize,
+        participants,
+        endDate,
+        registrationDeadline,
+        judges,
+        title,
+      });
+
+      return res.status(200).json({messsage:"Event Created",event})
+
 })
