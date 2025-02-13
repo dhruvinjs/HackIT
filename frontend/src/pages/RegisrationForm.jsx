@@ -210,7 +210,7 @@ function RegisrationForm() {
                 />
               </div> */}
 
-              <h2 className="text-xl font-semibold text-white mb-4">Add Leader</h2>
+              <h2 className="text-xl font-semibold text-white mb-4">Add Members</h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <input
                   type="text"
@@ -243,7 +243,7 @@ function RegisrationForm() {
                 className="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 <UserPlus className="h-4 w-4 mr-2" />
-                Add 
+                Add Members
               </motion.button>
             </motion.div>
 

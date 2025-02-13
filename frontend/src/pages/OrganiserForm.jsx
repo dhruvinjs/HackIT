@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useForm } from 'react-hook-form';
-import { CalendarRange, Users, Info, Trophy, Upload, Globe, MapPin, Lock, Unlock, Layers, Gift } from 'lucide-react';
+import { useForm,useFieldArray  } from 'react-hook-form';
+import { CalendarRange, Users, Info, Trophy, Upload, Globe, MapPin, Lock, Unlock, Layers, Gift, Search } from 'lucide-react';
 import { format } from 'date-fns';
 import { Nav } from '../components';
 
 function OrganiserForm() {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, control,formState: { errors } } = useForm();
     const [logoPreview, setLogoPreview] = useState('');
     const participationType = watch('participationType');
+    const eventType = watch('eventType');
+
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'judges',  // This will be the array name in form data
+    });
 
     const onSubmit = (data) => {
         console.log(data);
@@ -53,18 +59,52 @@ function OrganiserForm() {
 
                                     <input
                                         type="text"
-
+                                        {...register("title", { required: true })}
                                         className="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                         placeholder="Enter The Title"
                                     />
                                 </div>
+                                <div className="mb-6">
+                                    <label className="block text-sm text-white mb-1">Add Judges</label>
+                                    <div className="relative mb-4">
+                                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white" />
+                                        <input
+                                            type="text"
+                                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            placeholder="Search judges..."
+                                        />
+                                    </div>
+
+                                    {/* Render judges array dynamically */}
+                                    {fields.map((item, index) => (
+                                        <div key={item.id} className="flex items-center space-x-4 mb-4">
+                                            <input
+                                                type="text"
+                                                {...register(`judges[${index}].name`, { required: 'Judge name is required' })}
+                                                placeholder={`Judge ${index + 1} Name`}
+                                                className="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => remove(index)}
+                                                className="text-red-500 hover:text-red-700"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ))}
+
+                                    {/* Button to add more judges */}
+                                    <button
+                                        type="button"
+                                        onClick={() => append({ name: '' })}
+                                        className="bg-blue-500 px-4 py-2 rounded-md text-white hover:bg-blue-600"
+                                    >
+                                        Add Judge
+                                    </button>
+                                </div>
                                 {/* Logo Upload Section */}
                                 <div className="flex flex-col items-center p-6 border-2 border-dashed border-gray-300 rounded-lg">
-
-
-
-
-
                                     <Upload className="w-8 h-8 text-white mb-2" />
                                     <input
                                         type="file"
@@ -122,13 +162,16 @@ function OrganiserForm() {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-white mb-2">
-                                        <Globe className="inline-block w-4 h-4 mr-2" />
-                                        Location
-                                    </label>
-                                    <input className='w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent' type="text" />
-                                </div>
+                                {eventType === "online" ? <></> :
+                                    <div>
+                                        <label className="block text-sm font-medium text-white mb-2">
+                                            <Globe className="inline-block w-4 h-4 mr-2" />
+                                            Location
+                                        </label>
+                                        <input {...register("location", { required: true })} className='w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent' type="text" />
+                                    </div>
+                                }
+
 
                                 {/* Categories */}
                                 <div>
