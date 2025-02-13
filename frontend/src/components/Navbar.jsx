@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Menu, X, Github } from "lucide-react";
 import { Cpu } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate()
