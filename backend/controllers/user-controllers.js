@@ -207,7 +207,8 @@ export const hostEvents=asyncHandler(async (req,res) => {
         judges,
         submissions,
         rules,
-        guidelines
+        guidelines,
+        location
       } = req.body;
       if (
         !logo ||
@@ -241,7 +242,18 @@ export const hostEvents=asyncHandler(async (req,res) => {
         judges,
         title,
       });
+      const user=req.user
 
+
+      user.eventsHosted.push(event._id)
+      await user.save()
       return res.status(200).json({messsage:"Event Created",event})
 
+})
+
+export const getParticipants=asyncHandler(async (req,res) => {
+    const user=req.user 
+})
+export const registerEvents=asyncHandler(async (req,res) => {
+    
 })
