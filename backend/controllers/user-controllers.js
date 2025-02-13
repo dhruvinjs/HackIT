@@ -282,5 +282,30 @@ export const getParticipants=asyncHandler(async (req,res) => {
 })
 
 export const registerEvents=asyncHandler(async (req,res) => {
+    const {eventId}=req.body
+
+    if(!eventId){
+        return res.status(400).json({message:"Event id missing"})
+    }
+    const event = await EventModel.findById(eventId);
+    if (!event) {
+      return res.status(404).json({message:"Event not found"});      
+    }
+
+
+    const user=req.user
+
+    event.participants.push(user._id)
+    await event.save()
+
+    user.participatedIn.push(event._id)
+    await user.save()
+    return res.status(201).json({
+        message: "You have been successfully registered for the event!",
+        user: user.participatedIn,
+        eventParticipant: event.participants
+      });
+
+
     
 })
