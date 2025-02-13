@@ -22,7 +22,7 @@ const Event=new mongoose.Schema({
             required:true
         },
         prizePool:[{
-        currency:{type:String,enum:["inr","usd"]},
+        currency:{type:String,enum:["inr","usd"],default:"inr"},
         firstPrice:{type:Number,required:true},
         secondPrice:{type:Number,required:true},
         additionalPrices:{type:String}    

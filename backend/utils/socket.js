@@ -1,7 +1,6 @@
     import {Server} from "socket.io"
     import http from 'http'
     import express from "express"
-    import Organization from "../models/organization.model.js";
     import { TeamModel } from "../models/team.model.js";
     import { asyncHandler } from "./Asynchandler.js";
 
@@ -26,21 +25,12 @@
     io.on("connection",(socket)=>{
         // console.log("User connected , ",socket.id);
         
-        socket.on('orgjoin',async(orgId)=>{
-            await Organization.findByIdAndUpdate({_id:orgId},{
-                socketId:socket.id  
-            }) 
-        })
         const userId = socket.handshake.query.userId;
         if(userId) userSocketMap[userId] = socket.id;
 
         io.emit("getOnlineUsers",Object.keys(userSocketMap));
         
-    socket.on('orgDisconnect',async(orgId)=>{
-        await Organization.findByIdAndUpdate({_id:orgId},{
-            $unset :{socketId:""}
-        }) 
-    })
+    
 
     
     //Meeting Logic

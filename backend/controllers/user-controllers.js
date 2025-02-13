@@ -1,17 +1,11 @@
 import { UserModel } from "../models/user.model.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-import express from "express"
 import { asyncHandler } from "../utils/Asynchandler.js";
 import { z } from "zod"
-import nodemailer from "nodemailer";
 import dotenv, { parse } from "dotenv"
-import Hackathon from "../models/hackathon.model.js";
-import { TeamModel } from "../models/team.model.js";
+
 import { io } from "../utils/socket.js";
-import { assignBadges } from "../utils/Badges.js";
-import { objectIdSchema } from "./team.controllers.js";
-import { resolveContent } from "nodemailer/lib/shared/index.js";
 import { EventModel } from "../models/event-model.js";
 
 dotenv.config({
@@ -155,36 +149,6 @@ export const userLogout = asyncHandler(async (req, res) => {
     })
 })
 
-
-export const registerHackathon = asyncHandler(async (req, res) => {
-    const requestBody = z.object({
-        hackathonId: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format")
-    })
-
-    const parsedData = requestBody.safeParse(req.body)
-
-    if (!parsedData.success) {
-        return res.status(400).json({ message: parsedData.error.errors });
-    }
-    const { hackathonId } = parsedData.data
-    const user = req.user
-    const hackathon = await Hackathon.findById(hackathonId).populate("organizations")
-
-    if (!hackathon) {
-        return res.status(404).json({ message: "Hackathon not found" });
-    }
-    hackathon.push(participants._id)
-
-    io.to(orgs.socketId).emit("NewRegistrations", { user })
-    console.log(`new member event fired to ${orgs} with ${user} data`);
-    return res.status(200).json({
-        message: "Sucessfully participated in Hackathon",
-        user,
-        leagueMessage
-    }
-    )
-
-})
 
 export const checkAuth = asyncHandler(async (req, res) => {
     return res.status(200).json(req.user);
