@@ -62,10 +62,10 @@ const UserSchema = new mongoose.Schema({
         type:Boolean,
         default:false,
     },
-    hosted:{
+    eventsHosted:[{
         type : mongoose.Schema.Types.ObjectId,
             ref:"events",
-    }
+    }]
     //mentor will be an normal user , but will play an role of mentor for a specific org when the organizer will add him as an member.
 },{timestamps:true})
 export const UserModel = mongoose.model("users" , UserSchema);
