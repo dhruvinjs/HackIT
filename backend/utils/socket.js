@@ -45,16 +45,16 @@
     
     //Meeting Logic
     socket.on('host-meeting',async(teamId)=>{
-        const teamId=await TeamModel.findById(teamId)
-        if (!teamId) {
+        const team=await TeamModel.findById(teamId)
+        if (!team) {
             socket.emit("error", { message: "Invalid Team Id" });
             return;
         } 
         const roomId=generateRoomId()
         socket.join(meetingRoomId);
-        console.log(`New Meeting hosted in ${roomId} with ${teamId.name}`);
+        console.log(`New Meeting hosted in ${roomId} with ${team.name}`);
         //This will emit the roomId to chatroom of teamMembers
-        io.to(teamId).emit('meeting-hosted',{roomId})
+        io.to(team).emit('meeting-hosted',{roomId})
     })
 
 
