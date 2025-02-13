@@ -121,11 +121,7 @@ export const updateProfile=asyncHandler(async (req,res,next) => {
 export const userLogin=asyncHandler(async (req,res) => {
     const authSchema=z.object({
         email:z.string().email("Invalid format"),
-        password:z.string().min(6,"Password must have 6 characters").
-        max(100,"Password must have only 100 characters")
-        .regex(/[A-Z]/,"Password Must have one uppercase character")
-        .regex(/[!@#$%^&*(),.?":{}|<>]/,"Password should contain one special character")
-    })
+        })
     const parsedData=authSchema.safeParse(req.body)
     if(!parsedData.success){
         return res.status(404).json({

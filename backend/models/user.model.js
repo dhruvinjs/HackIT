@@ -4,10 +4,7 @@ const UserSchema = new mongoose.Schema({
     name : {
         type:String,
         required:true,
-<<<<<<< Updated upstream
-=======
         unique : true,
->>>>>>> Stashed changes
     },
     email:{
         type:String,

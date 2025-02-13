@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Video,
@@ -28,9 +28,107 @@ function VideoChatInterFace() {
     { id: 3, name: 'Mike Johnson', isMuted: false, isHost: false },
   ];
 
+
+  const rtcConfig={iceservers:[{ urls: "stun:stun.l.google.com:19302" }]}
   const handlePinParticipant = (id) => {
     setPinnedParticipant(pinnedParticipant === id ? null : id);
   };
+  //Storing the local Video Stream means our own video 
+  const [localStream,setLocalStream]=useState()
+  const [remoteStream,setRemoteStream]=useRef({})
+  //Other participants video stream which is tagged with thier socket id
+
+  const peerConnections=useRef({})//Keeping the other participants connection in object
+  const localVideoRef=useRef(null)//ye apna local video reference hai
+  const socketRef=useRef()
+  useEffect(() => {
+    socketRef.current=io("http:localhost:4000")
+    navigator.mediaDevices.getUserMedia({audio:true,video:true})
+    .then(stream=>{
+      setLocalStream(stream)
+     if(localVideoRef.current){
+      localVideoRef.current.srcObject=stream
+     }
+    })
+    .catch((err) => console.error("Error accessing media devices:", err));
+
+       // --- Set up Socket.IO Event Listeners for Signaling ---
+
+      //listen for offer means video on karne ka offer
+       socketRef.on('offer',async({offer,sender})=>{
+        if(!peerConnections.current[sender]){
+          createPeerConnection(sender)
+        }
+
+        await peerConnections.current[sender].setRemoteDescription(offer)
+        const answer = await peerConnections.current[sender].createAnswer();
+        //Ye mera answer so i am setting it for local description 
+        await peerConnections.current[sender].setLocalDescription(answer);
+        socketRef.emit('answer',{answer,targer:sender})
+
+
+       })
+
+
+       socketRef.on('answer',async({answer,sender})=>{
+        if(peerConnections.current[sender]){
+  // Set the received answer as the remote description to finalize the connection.
+          await peerConnections.current[sender].setRemoteDescription(answer);
+        }
+       })
+       
+       socketRef.current.on("ice-candidate", async ({ candidate, sender }) => {
+        if (peerConnections.current[sender]) {
+          try {
+            // Add the received ICE candidate to the corresponding RTCPeerConnection.
+            await peerConnections.current[sender].addIceCandidate(candidate);
+          } catch (e) {
+            console.error("Error adding received ICE candidate", e);
+          }
+        }
+      });
+  
+      // --- Cleanup: Disconnect socket on component unmount ---
+      return () => {
+        socketRef.current.disconnect();
+      };
+  }, []);
+
+  const createPeerConnection=(socketId)=>{
+    const pc=RTCPeerConnection(rtcConfig)
+
+    // If we already have a local media stream, add all of its tracks to the RTCPeerConnection.
+    //Basically ye apn etracks like video and audio set kar raha hia to send to user
+    if (localStream) {
+      localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
+    }
+
+    pc.ontrack = (event) => {
+      console.log("Remote track received from", socketId);
+      // Update our state by adding the new remote stream, but only if it’s not already added.
+      setRemoteStream((prevStreams) => {
+        // Check if the stream from this socket is already in our state.
+        if (!prevStreams.find((s) => s.socketId === socketId)) {
+          return [...prevStreams, { socketId, stream: event.streams[0] }];
+        }
+        return prevStreams;
+      });
+    };
+
+    // When the RTCPeerConnection finds an ICE candidate, send it to the remote peer.
+    pc.onicecandidate = (event) => {
+      if (event.candidate) {
+        socketRef.current.emit("ice-candidate", { candidate: event.candidate, target: socketId });
+      }
+    };
+
+    // Save the created RTCPeerConnection in our mutable ref object, keyed by the remote socket ID.
+    peerConnections.current[socketId] = pc;
+    return pc;
+  }
+  }
+  
+
 
   return (
     <div className="min-h-screen bg-black text-white">
