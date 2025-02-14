@@ -2,7 +2,9 @@ import React from 'react'
 import { motion } from 'framer-motion';
 
 
-function HackInfoCard() {
+function HackInfoCard({ value }) {
+
+
     return (
         <motion.div
             className="bg-white dark:bg-[#151515] rounded-xl p-6 w-full  shadow-lg"
@@ -12,7 +14,7 @@ function HackInfoCard() {
             <div className="flex gap-6">
                 <div className="flex">
                     <img
-                        src="https://placehold.co/100x100"
+                        src={value.logo}
                         alt="TechCorp Logo"
                         className="w-15 h-15 rounded-lg object-cover"
                     />
@@ -20,7 +22,7 @@ function HackInfoCard() {
 
                 <div className="flex-grow">
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                        AI Innovation Hack 2025
+                        {value.title}
                     </h2>
 
                     <div className="flex items-center mb-3">
@@ -30,13 +32,15 @@ function HackInfoCard() {
 
                     <div className="flex gap-6 mb-4">
                         <div className="bg-blue-100 dark:bg-blue-900 px-4 py-2 rounded-lg">
-                            <span className="text-blue-600 dark:text-blue-300 font-bold text-xl">12</span>
+                            <span className="text-blue-600 dark:text-blue-300 font-bold text-xl">{
+                                Math.floor((new Date(value.registrationEndDate && value.registrationEndDate.split("T")[0]) - new Date()) / (24 * 60 * 60 * 1000))
+                            }</span>
                             <span className="text-blue-600 dark:text-blue-300 text-sm ml-1">days left</span>
                         </div>
 
                         <div className="bg-green-50 dark:bg-green-900 px-4  py-2 rounded-lg">
                             <div className="text-green-800 dark:text-green-300 text-sm">Prize Pool</div>
-                            <div className="text-green-600 dark:text-green-200 font-bold text-lg">$25,000</div>
+                            <div className="text-green-600 dark:text-green-200 font-bold text-lg">{value.totalPrizePool}</div>
                         </div>
                     </div>
 
@@ -53,7 +57,7 @@ function HackInfoCard() {
                         >
                             #Innovation
                         </motion.span>
-                        
+
                     </div>
                 </div>
             </div>

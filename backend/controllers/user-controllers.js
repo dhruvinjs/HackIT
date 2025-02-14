@@ -5,7 +5,7 @@ import { asyncHandler } from "../utils/Asynchandler.js";
 import { z } from "zod"
 import dotenv, { parse } from "dotenv"
 import cloudinary from "../utils/cloudinary.js";
-import { io ,userSocketMap,getReceiverSocketId} from "../utils/socket.js";
+import { io, userSocketMap, getReceiverSocketId } from "../utils/socket.js";
 import { EventModel } from "../models/event-model.js";
 import { TeamModel } from "../models/team.model.js";
 
@@ -178,9 +178,9 @@ export const hostEvents = asyncHandler(async (req, res) => {
         judges,
         minTeamSize,
         maxTeamSize,
-        status
+        status,
+        orgname, orgemail, orgno
     } = req.body;
-    console.log(req.body)
     if (
         !logo ||
         !eventType ||
@@ -189,9 +189,9 @@ export const hostEvents = asyncHandler(async (req, res) => {
         !guidelines ||
         !rules ||
         !judges ||
-        !title||
+        !title ||
         !visibility ||
-        !entryFee ||
+        !entryFee || !orgname || !orgemail || !orgno ||
         !projectSubmissionDeadline
     ) {
         res.status(400);
@@ -204,16 +204,16 @@ export const hostEvents = asyncHandler(async (req, res) => {
 
 
     const event = await EventModel.create({
-        hostedBy : req.user._id,
+        hostedBy: req.user._id,
         title,
-        logo : uploadedResponse,
+        logo: uploadedResponse,
         eventType,
         visibility,
         location,
         categories,
         totalPrizePool,
         prizeCurrency,
-        status : status ? status : "upcoming",
+        status: status ? status : "upcoming",
         firstPrize,
         secondPrize,
         thirdPrize,
@@ -230,46 +230,51 @@ export const hostEvents = asyncHandler(async (req, res) => {
         judges,
         minTeamSize,
         maxTeamSize,
+        orgname,
+        orgemail,
+        orgno
     });
     const user = req.user
 
 
     user.eventsHosted.push(event._id)
     await user.save()
-    for(const userId in userSocketMap){
-        if(event.hostedBy != userId){
-            io.to(getReceiverSocketId(userId)).emit("newEvent",{event}) 
+    for (const userId in userSocketMap) {
+        if (event.hostedBy != userId) {
+            io.to(getReceiverSocketId(userId)).emit("newEvent", { event })
         }
     }
     return res.status(200).json({ messsage: "Event Created", event })
 
 })
 
-export const getActiveEvents=asyncHandler(async (req,res) => {
-    const user=req.user 
-    const events=await EventModel.find({status:"upcoming"})
-    if(!events){
-        return res.status(201).json({message:"No Current events active"})
+export const getActiveEvents = asyncHandler(async (req, res) => {
+    const user = req.user
+    const events = await EventModel.find({ status: "upcoming" })
+    if (!events) {
+        return res.status(201).json({ message: "No Current events active" })
     }
     return res.status(200).json({success:true,events})
+
+
 })
 
-export const getParticipants=asyncHandler(async (req,res) => {
-    const {eventID}=req.params
-    if(!eventID){
-        return res.status(400).json({message:"Event id missing"})
+export const getParticipants = asyncHandler(async (req, res) => {
+    const { eventID } = req.params
+    if (!eventID) {
+        return res.status(400).json({ message: "Event id missing" })
     }
     const event = await EventModel.findById(eventID);
     if (!event) {
-      res.status(404);
-      throw new Error("Event not found");
+        res.status(404);
+        throw new Error("Event not found");
     }
+  
     // Count the participants using the length of the participants array
     const participantCount = event.participants.length;
     return res.status(200).json({
         success: true,
         participantCount,
-        participants : event.participants
       });
 })
 
@@ -308,6 +313,7 @@ export const registerEvents=asyncHandler(async (req,res) => {
     })
     event.participants.push(team);
     await event.save();
+<<<<<<< Updated upstream
     return res.status(200).json({message : "Registered of event" , team});
 })
 

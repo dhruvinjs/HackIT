@@ -91,6 +91,36 @@ function OrganiserForm() {
                                         placeholder="Enter The Title"
                                     />
                                 </div>
+                                <label className="block text-sm text-white mb-1">Organization Name</label>
+                                <div className="relative">
+
+                                    <input
+                                        type="text"
+                                        {...register("orgname", { required: true })}
+                                        className="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        placeholder="Organization Name"
+                                    />
+                                </div>
+                                <label className="block text-sm text-white mb-1">Organization Email</label>
+                                <div className="relative">
+
+                                    <input
+                                        type="text"
+                                        {...register("orgemail", { required: true })}
+                                        className="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        placeholder="Organization Name"
+                                    />
+                                </div>
+                                <label className="block text-sm text-white mb-1">Organization Number</label>
+                                <div className="relative">
+
+                                    <input
+                                        type="text"
+                                        {...register("orgno", { required: true })}
+                                        className="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        placeholder="Organization Name"
+                                    />
+                                </div>
                                 <div className="mb-6">
                                     <label className="block text-sm text-white mb-1">Add Judges</label>
                                     <div className="relative mb-4">
