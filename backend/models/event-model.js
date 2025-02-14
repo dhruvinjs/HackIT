@@ -44,11 +44,23 @@ const Event=new mongoose.Schema({
             ref:"users",
             required:true
         },
-        participationType : {
-            type:String,
-            enum :["individual" , "team"],
-            default : "individual",
+        orgname : {
+            type : String,
+            required : true
         },
+        orgemail : {
+            type : String,
+            required : true
+        },
+        orgno : {
+            type : String,
+            required : true
+        },
+    participationType : {
+        type:String,
+        enum :["individual" , "team"],
+        default : "individual",
+    },
         entryFee:{
             type:String,
             required:true
