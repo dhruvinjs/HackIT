@@ -8,6 +8,7 @@ import cloudinary from "../utils/cloudinary.js";
 import { io, userSocketMap, getReceiverSocketId } from "../utils/socket.js";
 import { EventModel } from "../models/event-model.js";
 import { TeamModel } from "../models/team.model.js";
+import Chat from "../models/chat.model.js";
 
 dotenv.config({
     path: './.env'
@@ -153,100 +154,115 @@ export const checkAuth = asyncHandler(async (req, res) => {
 })
 
 export const hostEvents = asyncHandler(async (req, res) => {
-    const {
-        title,
-        logo,
-        eventType,
-        visibility,
-        location,
-        categories,
-        entryFee,
-        totalPrizePool,
-        prizeCurrency,
-        firstPrize,
-        secondPrize,
-        thirdPrize,
-        additionalPrizes,
-        participationType,
-        opportunityDetails,
-        registrationStartDate,
-        projectSubmissionDeadline,
-        registrationEndDate,
-        maxRegistrations,
-        guidelines,
-        rules,
-        judges,
-        minTeamSize,
-        maxTeamSize,
-        status,
-        orgname, orgemail, orgno
-    } = req.body;
-    if (
-        !logo ||
-        !eventType ||
-        !registrationStartDate ||
-        !registrationEndDate ||
-        !guidelines ||
-        !rules ||
-        !judges ||
-        !title ||
-        !visibility ||
-        !entryFee || !orgname || !orgemail || !orgno ||
-        !projectSubmissionDeadline
-    ) {
-        res.status(400);
-        throw new Error("Please provide all required fields");
+  const {
+      logo,
+    title,
+    eventType,
+    visibility,
+    location,
+    categories,
+    entryFee,
+    totalPrizePool,
+    prizeCurrency,
+    firstPrize,
+    secondPrize,
+    thirdPrize,
+    additionalPrizes,
+    participationType,
+    opportunityDetails,
+    registrationStartDate,
+    projectSubmissionDeadline,
+    registrationEndDate,
+    maxRegistrations,
+    guidelines,
+    rules,
+    judges,
+    minTeamSize,
+    maxTeamSize,
+    status,
+    orgname,
+    orgemail,
+    orgno,
+  } = req.body;
+
+  // Validate required fields
+  if (
+    !logo ||
+    !eventType ||
+    !registrationStartDate ||
+    !registrationEndDate ||
+    !guidelines ||
+    !rules ||
+    !judges ||
+    !title ||
+    !visibility ||
+    !entryFee ||
+    !orgname ||
+    !orgemail ||
+    !orgno ||
+    !projectSubmissionDeadline
+  ) {
+    res.status(400);
+    throw new Error("Please provide all required fields");
+  }
+
+  // Upload the logo image to Cloudinary
+//   let uploadedResponse;
+//   try {
+//     const response = await cloudinary.uploader.upload(logo);
+//     uploadedResponse = response.secure_url;
+//   } catch (error) {
+//     res.status(500);
+//     throw new Error("Image upload failed");
+//   }
+
+  // Create the event
+  const event = await EventModel.create({
+    hostedBy: req.user._id,
+    title,
+    logo: uploadedResponse,
+    eventType,
+    visibility,
+    location,
+    categories,
+    totalPrizePool,
+    prizeCurrency,
+    status: status ? status : "upcoming",
+    firstPrize,
+    secondPrize,
+    thirdPrize,
+    additionalPrizes,
+    participationType,
+    opportunityDetails,
+    registrationStartDate,
+    registrationEndDate,
+    maxRegistrations,
+    projectSubmissionDeadline,
+    guidelines,
+    entryFee,
+    rules,
+    judges,
+    minTeamSize,
+    maxTeamSize,
+    orgname,
+    orgemail,
+    orgno,
+  });
+
+  // Add the event to the host user's eventsHosted array and save
+  req.user.eventsHosted.push(event._id);
+  await req.user.save();
+
+  // Notify connected users (except the host) about the new event
+  for (const userId in userSocketMap) {
+    if (String(req.user._id) !== userId) {
+      io.to(getReceiverSocketId(userId)).emit("newEvent", { event });
     }
-    let uploadedResponse;
-    const response = await cloudinary.uploader.upload(logo);
-    uploadedResponse = response.secure_url;
+  }
 
+  return res.status(200).json({ message: "Event Created", event });
+});
 
-
-    const event = await EventModel.create({
-        hostedBy: req.user._id,
-        title,
-        logo: uploadedResponse,
-        eventType,
-        visibility,
-        location,
-        categories,
-        totalPrizePool,
-        prizeCurrency,
-        status: status ? status : "upcoming",
-        firstPrize,
-        secondPrize,
-        thirdPrize,
-        additionalPrizes,
-        participationType,
-        opportunityDetails,
-        registrationStartDate,
-        registrationEndDate,
-        maxRegistrations,
-        projectSubmissionDeadline,
-        guidelines,
-        entryFee,
-        rules,
-        judges,
-        minTeamSize,
-        maxTeamSize,
-        orgname,
-        orgemail,
-        orgno
-    });
-    const user = req.user
-
-
-    user.eventsHosted.push(event._id)
-    await user.save()
-    for (const userId in userSocketMap) {
-        if (event.hostedBy != userId) {
-            io.to(getReceiverSocketId(userId)).emit("newEvent", { event })
-        }
-    }
-    return res.status(200).json({ messsage: "Event Created", event })
-
-})
 
 export const getActiveEvents = asyncHandler(async (req, res) => {
     const user = req.user
@@ -278,44 +294,81 @@ export const getParticipants = asyncHandler(async (req, res) => {
       });
 })
 
-export const registerEvents=asyncHandler(async (req,res) => {
-    const id = req.params.id;
-    const {name,members}=req.body;
-    if(!name){
-        return res.status(400).json({message : "Team name is required."})
-    }
-    const event = await EventModel.findById(id); 
-    if(!event){
-        return res.status(404).json({message:"Event not found."});
-    }
-    if(Number(event.maxRegistrations) == event.participants.length){
-        return res.status(400).json({message : "Event registeration limit have reached."})
-    }
-    const currentDate = new Date();
-    if(currentDate == event.registrationEndDate){
-        return res.status(400).json({message : "Event registeration have Ended."})
-    }
 
-    let membersArr = event.participationType == "individual" ? [
-        {
-            memberId : req.user._id,
-            role : "leader"
-        }
-    ] : [
-        {
-            memberId : req.user._id,
-            role : "leader"
-        },...members
-    ]
 
-    const team = await TeamModel.create({
-        name , event : id , members :membersArr
-    })
-    event.participants.push(team);
-    await event.save();
+export const registerEvents = asyncHandler(async (req, res) => {
+  const eventId = req.params.id;
+  const { name, members } = req.body;
+  const user = req.user;
 
-    return res.status(200).json({message : "Registered of event" , team});
-})
+  if (!name) {
+    return res.status(400).json({ message: "Team name is required." });
+  }
+
+  const event = await EventModel.findById(eventId);
+  if (!event) {
+    return res.status(404).json({ message: "Event not found." });
+  }
+
+  if (Number(event.maxRegistrations) <= event.participants.length) {
+    return res.status(400).json({ message: "Event registration limit has been reached." });
+  }
+
+  const currentDate = new Date();
+  if (currentDate > event.registrationEndDate) {
+    return res.status(400).json({ message: "Event registration has ended." });
+  }
+
+  // Build the team members array.
+  // For individual participation, only the current user (as leader) is added.
+  // For team participation, include the current user as leader plus additional members.
+  let membersArr;
+  if (event.participationType === "individual") {
+    membersArr = [
+      { memberId: user._id, role: "leader" }
+    ];
+  } else {
+    membersArr = [
+      { memberId: user._id, role: "leader" },
+      ...members  // Assuming `members` is an array of objects { memberId, role }
+    ];
+  }
+
+  // Create the team and associate it with the event.
+  const team = await TeamModel.create({
+    name,
+    event: eventId,
+    members: membersArr
+  });
+
+  // Update each participating user's 'participatedIn' field.
+  // Use findByIdAndUpdate with the ID directly.
+  await Promise.all(
+    membersArr.map(member =>
+      UserModel.findByIdAndUpdate(member.memberId, { $push: { participatedIn: event._id } })
+    )
+  );
+
+  // Add the new team to the event's participants array.
+  event.participants.push(team);
+  await event.save();
+
+  // If the event is a team event (not individual), create a chat for the team.
+  let chat;
+  if (event.participationType !== "individual") {
+    chat = await Chat.create({ teamId: team._id, messages: [] });
+  }
+
+  // Optionally, re-fetch the current user's updated data if needed
+  const updatedUser = await UserModel.findById(user._id).select('-password');
+
+  return res.status(200).json({
+    message: "Registered for event",
+    team,
+    chat,
+    user: updatedUser
+  });
+});
 
 
 
@@ -408,15 +461,14 @@ export const getUsers = async(req,res)=>{
 
 
 export const getAppliedHackathons=asyncHandler(async (req,res) => {
-    const user=req.user
-    // const user=await UserModel.findById(userId).populate('participatedIn')
-    // const participatedIn=user.
-    const eventsParticipated=user.participatedIn
+    const user = await UserModel.findById(req.user._id).populate('participatedIn');
+
+  const eventNames = user.participatedIn;
     
 
-    if(!eventsParticipated || eventsParticipated.length===0){
+    if(!eventNames || eventNames.length===0){
         return res.status(400).json({message:"No events found"})
     }
 
-    return res.status(200).json({message:"Events found",eventsParticipated})
+    return res.status(200).json({message:"Events found",eventNames})
 })
