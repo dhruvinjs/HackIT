@@ -313,7 +313,7 @@ export const registerEvents=asyncHandler(async (req,res) => {
     })
     event.participants.push(team);
     await event.save();
-<<<<<<< Updated upstream
+
     return res.status(200).json({message : "Registered of event" , team});
 })
 
@@ -383,9 +383,25 @@ export const getEventDetails = async(req,res)=>{
         if(!event){
             return res.status(404).json({message : "Event not found."});
         }
-        return res.status(200).json({event})
+        return res.status(200).json(event)
     } catch (error) {
         console.log("error in getEventDetails : ",error);
         return res.status(500).json({message : "Internal server error."})
+    }
+}
+
+export const getUsers = async(req,res)=>{
+    try {
+        const { name } = req.body;
+
+        if (!name) {
+            return res.status(400).json({ error: "Search text is required" });
+        }
+        const users = await UserModel.find({ name: { $regex: name, $options: "i" } });
+
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Error searching users:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 }
