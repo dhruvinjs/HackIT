@@ -367,3 +367,19 @@ export const projectSubmission=asyncHandler(async (req,res) => {
 
 
 })
+
+
+export const getEventDetails = async(req,res)=>{
+    try {
+        const id = req.params.id;
+
+        const event = await EventModel.findById(id);
+        if(!event){
+            return res.status(404).json({message : "Event not found."});
+        }
+        return res.status(200).json({event})
+    } catch (error) {
+        console.log("error in getEventDetails : ",error);
+        return res.status(500).json({message : "Internal server error."})
+    }
+}

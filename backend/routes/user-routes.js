@@ -1,5 +1,5 @@
 import e from "express";
-import {checkAuth, getActiveEvents, getParticipants, hostEvents, registerEvents,  updateProfile, userLogin, userLogout, userSignUp}  from "../controllers/user-controllers.js";
+import {checkAuth, getActiveEvents, getEventDetails, getParticipants, hostEvents, registerEvents,  updateProfile, userLogin, userLogout, userSignUp}  from "../controllers/user-controllers.js";
 // import passport from "passport";
 import { authProtection } from "../middlewares/authProtection.js";
 import { hostProtection } from "../middlewares/hostProtection.js";
@@ -28,4 +28,6 @@ useroutes.post('/logout',authProtection,userLogout)
   useroutes.get('/events',authProtection,getActiveEvents)
   useroutes.get('/getParticipants/:eventID',authProtection,hostProtection,getParticipants)  
   useroutes.post('/apply/:id',authProtection,registerEvents)
-export {useroutes}
+  useroutes.get('/getEventDetails/:id', authProtection , getEventDetails)
+
+  export {useroutes}
