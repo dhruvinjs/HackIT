@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
     participatedIn:[
         {
             type : mongoose.Schema.Types.ObjectId,
-            ref:"events",
+            ref:"event",
         }
     ],
     achievements:[

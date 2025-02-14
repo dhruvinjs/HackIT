@@ -405,3 +405,18 @@ export const getUsers = async(req,res)=>{
         res.status(500).json({ error: "Internal server error" });
     }
 }
+
+
+export const getAppliedHackathons=asyncHandler(async (req,res) => {
+    const user=req.user
+    // const user=await UserModel.findById(userId).populate('participatedIn')
+    // const participatedIn=user.
+    const eventsParticipated=user.participatedIn
+    
+
+    if(!eventsParticipated || eventsParticipated.length===0){
+        return res.status(400).json({message:"No events found"})
+    }
+
+    return res.status(200).json({message:"Events found",eventsParticipated})
+})

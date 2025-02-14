@@ -13,18 +13,17 @@ import {
   ChevronDown,
   Pin,
   PinOff,
-  UserSearch
+  Loader2,
+  Send
 } from 'lucide-react';
-import WebRtcPeer from '../lib/WebRtcPeer.js';
 import io from 'socket.io-client';
 
 function VideoChatInterFace() {
-
-  const [text , setText] = useState("")
-  const [chatsToAI , setChatsToAI] = useState([]);
+  const [text, setText] = useState("");
+  const [chatsToAI, setChatsToAI] = useState([]);
   // UI States
   const [videoOn, setVideoOn] = useState(true);
-  const [isFetching , setIsFetching] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const [micOn, setMicOn] = useState(true);
   const [activeChat, setActiveChat] = useState('regular');
   const [isParticipantsOpen, setIsParticipantsOpen] = useState(true);
@@ -41,6 +40,7 @@ function VideoChatInterFace() {
   const [remoteSocketId, setRemoteSocketId] = useState('');
   const [newUser, setNewUser] = useState('');
 
+  // Dummy participants
   const participants = [
     { id: 1, name: 'John Doe', isMuted: false, isHost: true },
     { id: 2, name: 'Jane Smith', isMuted: true, isHost: false },
@@ -51,53 +51,60 @@ function VideoChatInterFace() {
     setPinnedParticipant(pinnedParticipant === id ? null : id);
   };
 
-  const handleKeyPress = async(event) => {
-    if (event.key === "Enter") {
-      setIsFetching(true);
-        await handleAICall();
-        setText("");
-        setIsFetching(false);
-        
-    }
-};
-const formatTextWithRegex = (text) => {
-  return text
+  // Format text from AI for code blocks, headings, etc.
+  const formatTextWithRegex = (text) => {
+    return text
       .replace(/^(\d+\.\s|\#{1,3}\s)(.+)/gm, "<h2>$2</h2>") // Headings
       .replace(/```([^`]+)```/g, "<pre>$1</pre>") // Code Blocks
       .replace(/`([^`]+)`/g, "<code>$1</code>") // Inline Code
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold
       .replace(/\n/g, "<br/>"); // New Line
-};
-  const handleAICall = async()=>{
+  };
+
+  const handleAICall = async () => {
     try {
-        const query = [
-          { role: "system", content: "You are a helpful AI for software development." },
-          { role: "user", content: text},
-        ];
-        const apiUrl = `https://furpssgdgg.execute-api.us-east-1.amazonaws.com/default/llm_chat?link=writecream.com2&query=${encodeURIComponent(JSON.stringify(query))}`;
-    
-        const response = await fetch(apiUrl, { method: 'GET' });
-        const data = await response.json();
-        console.log("data " , data);
-        setChatsToAI([...chatsToAI , {text , response : formatTextWithRegex(data.response_content)}])
-        if (response.ok) {
-          console.log("Success");
-        } else {
-          console.log("error while fetching .");
-        }
-      } catch (error) {
-        onsole.log("error while fetching .",error);
-      }
-  
-  }
+      const query = [
+        { role: "system", content: "You are a helpful AI for software development." },
+        { role: "user", content: text },
+      ];
+      // Dummy fetch for demonstration. Replace with your own endpoint/logic:
+      const apiUrl = `https://furpssgdgg.execute-api.us-east-1.amazonaws.com/default/llm_chat?query=${encodeURIComponent(
+        JSON.stringify(query)
+      )}`;
 
+      const response = await fetch(apiUrl, { method: 'GET' });
+      const data = await response.json();
 
-  // Set up socket connection and local media stream
+      setChatsToAI((prev) => [
+        ...prev,
+        {
+          text,
+          response: formatTextWithRegex(data?.response_content || "No response"),
+        },
+      ]);
+    } catch (error) {
+      console.log("Error while fetching AI response:", error);
+    }
+  };
+
+  const handleKeyPress = async (event) => {
+    // Trigger on Enter key or on Send button click
+    if (event.key === "Enter" || event.type === "click") {
+      if (!text.trim()) return; // Skip empty messages
+      setIsFetching(true);
+      await handleAICall();
+      setText("");
+      setIsFetching(false);
+    }
+  };
+
+  // Example socket / WebRTC setup
   useEffect(() => {
     socketRef.current = io("http://localhost:4000");
 
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-      .then(stream => {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true, video: true })
+      .then((stream) => {
         setMyStream(stream);
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream;
@@ -105,37 +112,22 @@ const formatTextWithRegex = (text) => {
       })
       .catch((err) => console.error("Error accessing media devices:", err));
 
-    // Listen for an incoming offer
-    socketRef.current.emit('offer', async ({ offer }) => {
-      // Create peer connection if it doesn't exist
-      if (!peerConnectionRef.current) {
-        createPeerConnection();
-      }
-      await peerConnectionRef.current.setRemoteDescription(offer);
-      const answer = await peerConnectionRef.current.createAnswer();
-      await peerConnectionRef.current.setLocalDescription(answer);
-      socketRef.current.emit('answer', { answer });
+    // Dummy example event handlers:
+    socketRef.current.on('offer', async ({ offer }) => {
+      console.log("Received offer:", offer);
+      // ...
     });
 
-    // Listen for an answer to our offer
     socketRef.current.on('answer', async ({ answer }) => {
-      if (peerConnectionRef.current) {
-        await peerConnectionRef.current.setRemoteDescription(answer);
-      }
+      console.log("Received answer:", answer);
+      // ...
     });
 
-    // Listen for incoming ICE candidates
-    socketRef.current.on("ice-candidate", async ({ candidate }) => {
-      if (peerConnectionRef.current) {
-        try {
-          await peerConnectionRef.current.addIceCandidate(candidate);
-        } catch (e) {
-          console.error("Error adding received ICE candidate", e);
-        }
-      }
+    socketRef.current.on('ice-candidate', async ({ candidate }) => {
+      console.log("Received candidate:", candidate);
+      // ...
     });
 
-    // Listen for a room joined event (for example purposes)
     socketRef.current.on('room-joined', (data) => {
       const { email, id } = data;
       setRemoteSocketId(id);
@@ -148,45 +140,16 @@ const formatTextWithRegex = (text) => {
     };
   }, []);
 
-  // Create a simple peer connection
+  // Simple placeholders for making offers
   const createPeerConnection = useCallback(() => {
-    const pc = new RTCPeerConnection(rtcConfig);
+    console.log("Creating peer connection");
+    // ...
+  }, []);
 
-    // If the local stream is available, add its tracks
-    if (mystream) {
-      mystream.getTracks().forEach((track) => {
-        pc.addTrack(track, mystream);
-      });
-    }
-
-    // Handle incoming remote tracks
-    pc.ontrack = (event) => {
-      console.log("Remote track received");
-      const [stream] = event.streams;
-      setRemoteStream(stream);
-    };
-
-    // Send ICE candidates to the signaling server
-    pc.onicecandidate = (event) => {
-      if (event.candidate) {
-        socketRef.current.emit("ice-candidate", { candidate: event.candidate });
-      }
-    };
-
-    peerConnectionRef.current = pc;
-    return pc;
-  }, [mystream, rtcConfig]);
-
-  // Make an offer to initiate a connection
   const makeOffer = useCallback(async () => {
-    if (!peerConnectionRef.current) {
-      createPeerConnection();
-    }
-    console.log('Make offer called');
-    const offer = await peerConnectionRef.current.createOffer();
-    await peerConnectionRef.current.setLocalDescription(offer);
-    socketRef.current.emit('offer', { offer });
-  }, [createPeerConnection]);
+    console.log("Making an offer");
+    // ...
+  }, []);
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -215,18 +178,12 @@ const formatTextWithRegex = (text) => {
                         onClick={() => handlePinParticipant(participant.id)}
                         className="p-2 rounded-lg bg-gray-900/50 hover:bg-gray-900/75 transition-colors"
                       >
-                        {pinnedParticipant === participant.id ? (
-                          <PinOff size={20} />
-                        ) : (
-                          <Pin size={20} />
-                        )}
+                        {pinnedParticipant === participant.id ? <PinOff size={20} /> : <Pin size={20} />}
                       </button>
                     </div>
                     <div className="absolute bottom-4 left-4 flex items-center gap-2">
                       <span className="text-sm font-medium">{participant.name}</span>
-                      {participant.isMuted && (
-                        <MicOff size={16} className="text-red-500" />
-                      )}
+                      {participant.isMuted && <MicOff size={16} className="text-red-500" />}
                     </div>
                   </motion.div>
                 ) : null
@@ -257,7 +214,6 @@ const formatTextWithRegex = (text) => {
             <button className="p-4 rounded-full bg-red-500 hover:bg-red-600 transition-colors">
               <Phone size={24} />
             </button>
-            {/* Button to start the connection */}
             <button
               onClick={makeOffer}
               className="p-4 rounded-full bg-blue-500 hover:bg-blue-600 transition-colors"
@@ -269,6 +225,7 @@ const formatTextWithRegex = (text) => {
 
         {/* Right side: Chat & Participants UI */}
         <div className="w-80 bg-[#151515] rounded-lg p-4 flex flex-col">
+          {/* Chat Switcher */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -294,7 +251,8 @@ const formatTextWithRegex = (text) => {
             </button>
           </motion.div>
 
-          <div className="flex-grow overflow-y-scroll">
+          {/* Chat Window */}
+          <div className="flex-grow overflow-y-auto">
             <AnimatePresence mode="wait">
               {activeChat === 'regular' ? (
                 <motion.div
@@ -304,17 +262,21 @@ const formatTextWithRegex = (text) => {
                   exit={{ opacity: 0, x: 20 }}
                   className="h-full flex flex-col"
                 >
-                  <div className="flex-grow overflow-y-auto space-y-4 mb-4">
-                    <p className="text-gray-400 text-center text-sm">
+                  <div className="flex-grow overflow-y-auto space-y-4 mb-4 px-2">
+                    <p className="text-gray-400 text-center text-sm mt-2">
                       Chat messages will appear here
                     </p>
+                    {/* Example messages could go here */}
                   </div>
-                  <div className="relative">
+                  <div className="relative flex items-center gap-2 px-2 pb-2">
                     <input
                       type="text"
                       placeholder="Type a message..."
-                      className="w-full bg-gray-800 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="flex-grow bg-gray-800 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
+                    <button className="p-2 rounded-full bg-blue-500 hover:bg-blue-600 transition-colors">
+                      <Send size={20} />
+                    </button>
                   </div>
                 </motion.div>
               ) : (
@@ -325,41 +287,61 @@ const formatTextWithRegex = (text) => {
                   exit={{ opacity: 0, x: 20 }}
                   className="h-full flex flex-col"
                 >
-                  <div className="flex-grow overflow-y-scroll space-y-4 mb-4">
-                    {chatsToAI.length == 0 ? <p className="text-gray-400 text-center text-sm">
-                      AI chat messages will appear here
-                    </p> : <div className='flex flex-col gap-7'>
-                        {chatsToAI && chatsToAI.map((chat)=>{
-                          return <div className='flex flex-col gap-4 border-b-1 pb-4'>
-                            <p className='bg-white p-2 rounded-xl text-black'>{chat.text}</p>
-                            <div dangerouslySetInnerHTML={{ __html: chat.response }}></div>
+                  {/* AI Chat Messages */}
+                  <div className="flex-grow overflow-y-auto space-y-4 mb-4 px-2 py-2">
+                    {chatsToAI.length === 0 ? (
+                      <p className="text-gray-400 text-center text-sm mt-2">
+                        AI chat messages will appear here
+                      </p>
+                    ) : (
+                      chatsToAI.map((chat, index) => (
+                        <div key={index} className="space-y-2">
+                          {/* User Bubble (Right-aligned) */}
+                          <div className="flex justify-end">
+                            <div className="max-w-[70%] bg-blue-600 px-3 py-2 rounded-md text-sm text-white break-words">
+                              {chat.text}
+                            </div>
                           </div>
-                        })}
-                      </div>}
+                          {/* AI Bubble (Left-aligned) */}
+                          <div className="flex justify-start">
+                            <div
+                              className="max-w-[70%] bg-gray-700 px-3 py-2 rounded-md text-sm text-white break-words"
+                              dangerouslySetInnerHTML={{ __html: chat.response }}
+                            />
+                          </div>
+                        </div>
+                      ))
+                    )}
                   </div>
-                  <div className="relative flex justify-end">
-                    {isFetching ? 
-                    <div role="status px-4 py-2">
-                        <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-                        </svg>
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                    :<input
+
+                  {/* AI Input & Send */}
+                  <div className="flex items-center gap-2 px-2 pb-2">
+                    <input
                       type="text"
                       placeholder="Ask AI something..."
-                      className="w-full bg-gray-800 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="flex-grow bg-gray-800 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       value={text}
-                      onChange={(e)=>setText(e.target.value)}
+                      onChange={(e) => setText(e.target.value)}
                       onKeyDown={handleKeyPress}
-                    />}
+                      disabled={isFetching}
+                    />
+                    <button
+                      onClick={handleKeyPress}
+                      className="p-2 rounded-full bg-blue-500 hover:bg-blue-600 transition-colors flex items-center justify-center"
+                    >
+                      {isFetching ? (
+                        <Loader2 size={20} className="animate-spin" />
+                      ) : (
+                        <Send size={20} />
+                      )}
+                    </button>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
+          {/* Participants */}
           <div className="mt-4 pt-4 border-t border-gray-700">
             <button
               onClick={() => setIsParticipantsOpen(!isParticipantsOpen)}
@@ -369,7 +351,10 @@ const formatTextWithRegex = (text) => {
                 <Users size={20} />
                 <h3 className="font-medium">Participants ({participants.length})</h3>
               </div>
-              <motion.div animate={{ rotate: isParticipantsOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+              <motion.div
+                animate={{ rotate: isParticipantsOpen ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
                 <ChevronDown size={20} />
               </motion.div>
             </button>
@@ -392,7 +377,9 @@ const formatTextWithRegex = (text) => {
                       <div className="flex items-center gap-2">
                         <span>{participant.name}</span>
                         {participant.isHost && (
-                          <span className="text-xs bg-blue-500 px-2 py-0.5 rounded">Host</span>
+                          <span className="text-xs bg-blue-500 px-2 py-0.5 rounded">
+                            Host
+                          </span>
                         )}
                       </div>
                       <div className="flex items-center gap-2">
@@ -400,7 +387,11 @@ const formatTextWithRegex = (text) => {
                           onClick={() => handlePinParticipant(participant.id)}
                           className="text-gray-400 hover:text-white transition-colors"
                         >
-                          {pinnedParticipant === participant.id ? <PinOff size={16} /> : <Pin size={16} />}
+                          {pinnedParticipant === participant.id ? (
+                            <PinOff size={16} />
+                          ) : (
+                            <Pin size={16} />
+                          )}
                         </button>
                         {participant.isHost && (
                           <button
