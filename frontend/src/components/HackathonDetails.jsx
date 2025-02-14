@@ -35,10 +35,11 @@ const StatCard = ({ title, value, icon }) => (
 export function HackathonDetails({ value }) {
 
     const navigate = useNavigate()
-    const { getParticipants, hackathons,particpantsCount } = useHostStore()
+    const { getParticipants, hackathons, particpantsCount } = useHostStore()
 
-    const handleApply = () => {
-        navigate("/register")
+    const handleApply = (value) => {
+        console.log("value :", value)
+        navigate(`/register/${value._id}`)
     }
 
     useEffect(() => {
@@ -62,11 +63,11 @@ export function HackathonDetails({ value }) {
                     </div>
 
                     <div className="flex-grow">
-                        <h1 className="text-3xl font-bold mb-2">{hackathons && hackathons[0].title || value.title}</h1>
+                        <h1 className="text-3xl font-bold mb-2">{value.title || hackathons && hackathons[0].title }</h1>
                         <div className="flex flex-wrap gap-4 mb-4">
                             <span className="flex items-center text-gray-600 dark:text-gray-400">
                                 <span className="mr-2">📍</span>
-                                {hackathons && hackathons[0].location || value.location}
+                                { value.location || hackathons && hackathons[0].location}
                             </span>
                             <span className="flex items-center text-gray-600 dark:text-gray-400">
                                 <span className="mr-2">🏢</span>
@@ -79,7 +80,7 @@ export function HackathonDetails({ value }) {
                         </div>
 
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <StatCard title="Total Prize" value={hackathons && hackathons[0].totalPrizePool || value.totalPrizePool} icon="🏆" />
+                            <StatCard title="Total Prize" value={value.totalPrizePool || hackathons && hackathons[0].totalPrizePool} icon="🏆" />
                             <StatCard title="Registered" value={particpantsCount || 0} icon="👥" />
                             <StatCard
                                 title="Registration Deadline"
@@ -99,7 +100,7 @@ export function HackathonDetails({ value }) {
 
                 </div>
                 <div className='flex justify-end mt-4'>
-                    <button className='bg-blue-500 px-6 py-2 rounded-md font-semibold' onClick={() => handleApply()}>Apply</button>
+                    <button className='bg-blue-500 px-6 py-2 rounded-md font-semibold' onClick={() => handleApply(value)}>Apply</button>
                 </div>
 
             </div>
@@ -113,7 +114,7 @@ export function HackathonDetails({ value }) {
                             <span className="text-blue-500">👥</span>
                             <div>
                                 <div className="font-medium">Team Size</div>
-                                <div className="text-gray-600 dark:text-gray-400">{hackathons && hackathons[0].minTeamSize || hackathons && hackathons[0].minTeamSize || value.maxTeamSize} - {value.maxTeamSize} Members</div>
+                                <div className="text-gray-600 dark:text-gray-400">{value.minTeamSize || hackathons && hackathons[0].minTeamSize} - {value.maxTeamSize || hackathons && hackathons[0].maxTeamSize} Members</div>
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
@@ -131,11 +132,11 @@ export function HackathonDetails({ value }) {
                     <div className="text-gray-600 dark:text-gray-400">
                         <div className="mb-2">
                             <div className="font-medium">Registration Deadline</div>
-                            <div>{hackathons && hackathons[0].registrationEndDate.split("T")[0] || value.registrationEndDate && value.registrationEndDate.split("T")[0]}</div>
+                            <div>{value.registrationEndDate && value.registrationEndDate.split("T")[0] || hackathons && hackathons[0].registrationEndDate.split("T")[0]}</div>
                         </div>
                         <div>
                             <div className="font-medium">Starting From</div>
-                            <div>{hackathons && hackathons[0].registrationStartDate.split("T")[0] || value.registrationStartDate && value.registrationStartDate.split("T")[0]}</div>
+                            <div>{value.registrationStartDate && value.registrationStartDate.split("T")[0] || hackathons && hackathons[0].registrationStartDate.split("T")[0]}</div>
                         </div>
                     </div>
                 </div>
@@ -169,7 +170,7 @@ export function HackathonDetails({ value }) {
                     </p>
                     <h3 className="text-lg font-semibold mt-6 mb-3">Why join?</h3>
                     <p className=" pl-6 ">
-                        {hackathons && hackathons[0].rules || value.rules}
+                        {value.rules || hackathons && hackathons[0].rules}
                     </p>
                 </div>
             </div>
@@ -181,19 +182,19 @@ export function HackathonDetails({ value }) {
                     <div className="flex items-center gap-3">
                         <span className="text-blue-500">🏢</span>
                         <div>
-                            <div className="font-medium">{hackathons && hackathons[0].orgname || value.orgname}</div>
+                            <div className="font-medium">{value.orgname || hackathons && hackathons[0].orgname}</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
                         <span className="text-blue-500">📧</span>
                         <a href="mailto:schoolofcet.csi@mitwpu.edu.in" className="text-blue-500 hover:underline">
-                            {hackathons && hackathons[0].orgemail || value.orgemail}
+                            {value.orgemail || hackathons && hackathons[0].orgemail}
                         </a>
                     </div>
                     <div className="flex items-center gap-3">
                         <span className="text-blue-500">📱</span>
                         <a href="tel:+918956085495" className="text-blue-500 hover:underline">
-                            {hackathons && hackathons[0].orgno || value.orgno}
+                            {value.orgno || hackathons && hackathons[0].orgno}
                         </a>
                     </div>
                 </div>

@@ -4,7 +4,8 @@ import { axiosInstance } from "../lib/AxiosInstance";
 
 export const useHostStore = create((set, get) => ({
     hackathons: null,
-    particpantsCount : null,
+    selectedHackathon: null,
+    particpantsCount: null,
     isCreating: false,
     isGettingActiveEvents: false,
 
@@ -38,11 +39,21 @@ export const useHostStore = create((set, get) => ({
         try {
             const response = await axiosInstance.get("/user/getParticipants")
             console.log(response)
-            set({ hackathons: response.data.participantCount})
+            set({ hackathons: response.data.participantCount })
             toast.success("Participant Count Fetched")
         } catch (error) {
             console.log("Error while fetching Participant Count")
             toast.error(error.response.data.message)
-        } 
-    }
+        }
+    },
+    getEventInfo: async (id) => {
+        try {
+            const response = await axiosInstance.get(`user/getEventDetails/${id}`)
+            set({ selectedHackathon: response.data })
+        } catch (error) {
+            console.log("Error while fetching Hackthon Info")
+            toast.error(error.response.data.message)
+        }
+    },
+    
 }))

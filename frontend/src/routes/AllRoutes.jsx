@@ -17,12 +17,12 @@ export const AllRoutes = () => {
       <Route path="/dashboard" element={<UserDashBoard />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/update" element={<UpdateProfile />} />
-      <Route path="/register" element={<RegisrationForm />} />
+      <Route path="/register/:id" element={<RegisrationForm />} />
       <Route path="/create" element={<OrganiserForm />} />
       <Route path="/history" element={<ParticipationHistory />} />
       <Route path="/friends" element={<Friends />} />
       <Route path="/chat" element={<ChatPage />} />
-      <Route path="/apply" element={<RegisrationForm />} />
+      <Route path="/apply/" element={<RegisrationForm />} />
       <Route path="/webrtc" element={<VideoChatInterFace />} />
     </Routes>
   );

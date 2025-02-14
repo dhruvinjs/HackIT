@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Nav } from '../components';
 import { Search, UserPlus, X, Send, Calendar, MapPin, Trophy, CreditCard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useParams } from 'react-router-dom';
+import { useHostStore } from '../store/useHostStore';
+import { useAuthStore } from '../store/useAuthStore';
 
 function RegisrationForm() {
   const [teamName, setTeamName] = useState('');
@@ -12,8 +15,44 @@ function RegisrationForm() {
   const [error, setError] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [agreed, setAgreed] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
-  
+  const { selectedHackathon, getEventInfo } = useHostStore();
+  const { getUsers, users } = useAuthStore();
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    const hackathonInfo = async () => {
+      await getEventInfo(id);
+    };
+    hackathonInfo();
+  }, []);
+
+  const searchCall = async (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    
+    if (query.length > 0) {
+      await getUsers();
+      setShowSuggestions(true);
+      const filtered = users?.filter(user =>
+        user.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredUsers(filtered || []);
+    } else {
+      setShowSuggestions(false);
+      setFilteredUsers([]);
+    }
+  };
+
+  const selectUser = (user) => {
+    setNewMemberName(user.name);
+    setNewMemberEmail(user.email || '');
+    setSearchQuery('');
+    setShowSuggestions(false);
+  };
 
   const hackathonInfo = {
     name: "TechNova Hackathon 2025",
@@ -31,7 +70,6 @@ function RegisrationForm() {
   };
 
   const addTeamMember = () => {
-
     if (teamMembers.length >= 5) {
       setError('Maximum 5 team members allowed');
       return;
@@ -96,9 +134,7 @@ function RegisrationForm() {
         animate={{ opacity: 1 }}
         className="min-h-screen bg-black text-white py-12 px-4 sm:px-6 lg:px-8"
       >
-
-        <div className="max-w-4xl  text-white mx-auto">
-
+        <div className="max-w-4xl text-white mx-auto">
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -110,9 +146,9 @@ function RegisrationForm() {
               animate={{ scale: 1 }}
               className="text-4xl font-bold text-white mb-4 text-center"
             >
-              {hackathonInfo.name}
+              {selectedHackathon?.title}
             </motion.h1>
-            <p className="  text-white  text-center mb-8">{hackathonInfo.description}</p>
+            <p className="text-white text-center mb-8">{selectedHackathon?.guidelines}</p>
 
             <motion.div
               initial={{ y: 20, opacity: 0 }}
@@ -122,23 +158,23 @@ function RegisrationForm() {
             >
               <motion.div whileHover={{ scale: 1.05 }} className="flex items-center space-x-3 bg-black text-white p-2 rounded-md">
                 <Calendar className="h-6 w-6 text-indigo-600" />
-                <div className=''>
+                <div>
                   <h3 className="font-semibold">Date</h3>
-                  <p className="text-sm text-white">{hackathonInfo.date}</p>
+                  <p className="text-sm text-white">{selectedHackathon?.registrationStartDate}</p>
                 </div>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} className="flex items-center space-x-3 bg-black text-white p-2 rounded-md">
                 <MapPin className="h-6 w-6 text-indigo-600" />
                 <div>
                   <h3 className="font-semibold">Venue</h3>
-                  <p className="text-sm text-white">{hackathonInfo.venue}</p>
+                  <p className="text-sm text-white">{selectedHackathon?.location}</p>
                 </div>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} className="flex items-center space-x-3 bg-black text-white p-2 rounded-md">
                 <Trophy className="h-6 w-6 text-indigo-600" />
                 <div>
                   <h3 className="font-semibold">Prize Pool</h3>
-                  <p className="text-sm text-white">{hackathonInfo.prizePool}</p>
+                  <p className="text-sm text-white">{selectedHackathon?.totalPrizePool}</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -147,7 +183,7 @@ function RegisrationForm() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="text-white p-4 rounded-lg bg-black "
+              className="text-white p-4 rounded-lg bg-black"
             >
               <h3 className="font-semibold mb-2">Important Dates</h3>
               <ul className="text-sm space-y-1">
@@ -170,7 +206,7 @@ function RegisrationForm() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="bg-[#151515] text-white  rounded-lg shadow-xl p-8"
+            className="bg-[#151515] text-white rounded-lg shadow-xl p-8"
           >
             <h2 className="text-2xl font-bold text-white mb-8">Team Registration</h2>
 
@@ -201,16 +237,42 @@ function RegisrationForm() {
               transition={{ delay: 0.7 }}
               className="mb-8 p-6 bg-black rounded-lg"
             >
-              {/* <div className="relative mb-4">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white" />
+              <div className="relative mb-4">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  onChange={searchCall}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-900"
                   placeholder="Search team members..."
                 />
-              </div> */}
+                {showSuggestions && searchQuery && (
+                  <div className="absolute w-full bg-white mt-1 rounded-md shadow-lg border border-gray-200 max-h-60 overflow-y-auto z-10">
+                    {filteredUsers && filteredUsers.length > 0 ? (
+                      filteredUsers.map((user) => (
+                        <div
+                          key={user.id}
+                          className="px-4 py-2 hover:bg-gray-50 cursor-pointer transition-colors"
+                          onClick={() => selectUser(user)}
+                        >
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-gray-900">
+                              {user.name}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {user.email}
+                            </span>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="px-4 py-2 text-sm text-gray-500">
+                        No results found
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
 
               <h2 className="text-xl font-semibold text-white mb-4">Add Members</h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -245,7 +307,7 @@ function RegisrationForm() {
                 className="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 <UserPlus className="h-4 w-4 mr-2" />
-                Add Members
+                Add Member
               </motion.button>
             </motion.div>
 
@@ -256,8 +318,6 @@ function RegisrationForm() {
               transition={{ delay: 0.8 }}
               className="mb-8"
             >
-
-
               <AnimatePresence>
                 <div className="space-y-4">
                   {filteredMembers.map((member) => (
@@ -272,7 +332,7 @@ function RegisrationForm() {
                         <h3 className="text-sm font-medium text-white">{member.name}</h3>
                         <p className="text-sm text-white">{member.email}</p>
                       </div>
-                      <div className="flex items-center text-white bg-[#151515]  space-x-2">
+                      <div className="flex items-center text-white bg-[#151515] space-x-2">
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
@@ -347,7 +407,7 @@ function RegisrationForm() {
                       <div>
                         <label className="block text-sm font-medium text-white mb-2">Card Number</label>
                         <div className="flex">
-                          <CreditCard className="h-5 w-5 text-white absolute mt-3 ml-3" />
+                          <CreditCard className="h-5 w-5 text-gray-400 absolute mt-3 ml-3" />
                           <input
                             type="text"
                             className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"

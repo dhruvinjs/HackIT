@@ -9,6 +9,7 @@ export const useAuthStore = create((set, get) => ({
     isLoggingIn: false,
     isCheckingAuth: true,
     isLoggingOut: false,
+    users : null,
 
 
 
@@ -66,4 +67,13 @@ export const useAuthStore = create((set, get) => ({
             set({ isLoggingOut: false })
         }
     },
+    getUsers: async () => {
+        try {
+            const response = await axiosInstance.post("user/getUsers")
+            set({ users: response.data.users })
+        } catch (error) {
+            console.log("Error while fetching users")
+            toast.error(error.response.data.message)
+        }
+    }
 }))

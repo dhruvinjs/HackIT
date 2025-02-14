@@ -4,11 +4,11 @@ import {checkAuth, getActiveEvents, getAppliedHackathons, getEventDetails, getPa
 import { authProtection } from "../middlewares/authProtection.js";
 import { hostProtection } from "../middlewares/hostProtection.js";
 
-const useroutes=e.Router()
+const useroutes = e.Router()
 useroutes.route('/signup').post(userSignUp)
-useroutes.post('/signUp',userSignUp)
-useroutes.post('/login',userLogin)
-useroutes.post('/logout',authProtection,userLogout)
+useroutes.post('/signUp', userSignUp)
+useroutes.post('/login', userLogin)
+useroutes.post('/logout', authProtection, userLogout)
 // useroutes.get('/google',passport.authenticate('google',{scope:['profile','email']}))
 // useroutes.get(
 //     '/google/callback',
@@ -17,7 +17,7 @@ useroutes.post('/logout',authProtection,userLogout)
 //       if (!req.user) {
 //         return res.status(401).json({ message: 'Authentication failed' });
 //       }
-  
+
 //       // Send JWT to frontend
 //       res.redirect(`http://localhost:5173?token=${req.user.token}`);
 //     }
@@ -32,4 +32,4 @@ useroutes.post('/logout',authProtection,userLogout)
   useroutes.post("/getUsers" , authProtection , getUsers)
   useroutes.post("/eventsParticipated" , authProtection ,getAppliedHackathons)
 
-  export {useroutes}
+export { useroutes }
