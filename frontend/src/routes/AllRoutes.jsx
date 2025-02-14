@@ -23,6 +23,7 @@ export const AllRoutes = () => {
       <Route path="/friends" element={<Friends />} />
       <Route path="/chat" element={<ChatPage />} />
       <Route path="/apply" element={<RegisrationForm />} />
+      <Route path="/webrtc" element={<VideoChatInterFace />} />
     </Routes>
   );
 };

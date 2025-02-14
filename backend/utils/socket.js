@@ -41,11 +41,11 @@
             return;
         } 
         const roomId=generateRoomId()
-        socket.join(meetingRoomId);
+        socket.join(roomId);
         console.log(`New Meeting hosted in ${roomId} with ${team.name}`);
         //This will emit the roomId to chatroom of teamMembers
-        io.to(team).emit('meeting-hosted',{roomId})
-    })
+        io.to(team).emit('meeting-hosted', { roomId });
+})
 
 
     socket.on('join-meeting',(roomId)=>{

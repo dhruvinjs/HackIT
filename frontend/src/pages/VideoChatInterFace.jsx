@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Video,
@@ -14,13 +14,27 @@ import {
   Pin,
   PinOff
 } from 'lucide-react';
+import WebRtcPeer from '../lib/WebRtcPeer.js';
+import io from 'socket.io-client';
 
 function VideoChatInterFace() {
+  // UI States
   const [videoOn, setVideoOn] = useState(true);
   const [micOn, setMicOn] = useState(true);
   const [activeChat, setActiveChat] = useState('regular');
   const [isParticipantsOpen, setIsParticipantsOpen] = useState(true);
   const [pinnedParticipant, setPinnedParticipant] = useState(null);
+
+  // References and WebRTC States
+  const localVideoRef = useRef(null);
+  const socketRef = useRef();
+  const peerConnectionRef = useRef(null);
+  const rtcConfig = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+
+  const [mystream, setMyStream] = useState(null);
+  const [remotestream, setRemoteStream] = useState(null);
+  const [remoteSocketId, setRemoteSocketId] = useState('');
+  const [newUser, setNewUser] = useState('');
 
   const participants = [
     { id: 1, name: 'John Doe', isMuted: false, isHost: true },
@@ -28,55 +42,59 @@ function VideoChatInterFace() {
     { id: 3, name: 'Mike Johnson', isMuted: false, isHost: false },
   ];
 
-  const rtcConfig = { iceservers: [{ urls: "stun:stun.l.google.com:19302" }] };
-
   const handlePinParticipant = (id) => {
     setPinnedParticipant(pinnedParticipant === id ? null : id);
   };
 
-  const [localStream, setLocalStream] = useState(null);
-  const [remoteStreams, setRemoteStreams] = useState([]); // Use an array to store remote streams
-  const peerConnections = useRef({});
-  const localVideoRef = useRef(null);
-  const socketRef = useRef();
-
+  // Set up socket connection and local media stream
   useEffect(() => {
     socketRef.current = io("http://localhost:4000");
 
     navigator.mediaDevices.getUserMedia({ audio: true, video: true })
       .then(stream => {
-        setLocalStream(stream);
+        setMyStream(stream);
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream;
         }
       })
       .catch((err) => console.error("Error accessing media devices:", err));
 
-    socketRef.on('offer', async ({ offer, sender }) => {
-      if (!peerConnections.current[sender]) {
-        createPeerConnection(sender);
+    // Listen for an incoming offer
+    socketRef.current.emit('offer', async ({ offer }) => {
+      // Create peer connection if it doesn't exist
+      if (!peerConnectionRef.current) {
+        createPeerConnection();
       }
-
-      await peerConnections.current[sender].setRemoteDescription(offer);
-      const answer = await peerConnections.current[sender].createAnswer();
-      await peerConnections.current[sender].setLocalDescription(answer);
-      socketRef.emit('answer', { answer, target: sender });
+      await peerConnectionRef.current.setRemoteDescription(offer);
+      const answer = await peerConnectionRef.current.createAnswer();
+      await peerConnectionRef.current.setLocalDescription(answer);
+      socketRef.current.emit('answer', { answer });
     });
 
-    socketRef.on('answer', async ({ answer, sender }) => {
-      if (peerConnections.current[sender]) {
-        await peerConnections.current[sender].setRemoteDescription(answer);
+    // Listen for an answer to our offer
+    socketRef.current.on('answer', async ({ answer }) => {
+      if (peerConnectionRef.current) {
+        await peerConnectionRef.current.setRemoteDescription(answer);
       }
     });
 
-    socketRef.current.on("ice-candidate", async ({ candidate, sender }) => {
-      if (peerConnections.current[sender]) {
+    // Listen for incoming ICE candidates
+    socketRef.current.on("ice-candidate", async ({ candidate }) => {
+      if (peerConnectionRef.current) {
         try {
-          await peerConnections.current[sender].addIceCandidate(candidate);
+          await peerConnectionRef.current.addIceCandidate(candidate);
         } catch (e) {
           console.error("Error adding received ICE candidate", e);
         }
       }
+    });
+
+    // Listen for a room joined event (for example purposes)
+    socketRef.current.on('room-joined', (data) => {
+      const { email, id } = data;
+      setRemoteSocketId(id);
+      setNewUser(email);
+      console.log(`${email} has joined`);
     });
 
     return () => {
@@ -84,40 +102,54 @@ function VideoChatInterFace() {
     };
   }, []);
 
-  const createPeerConnection = (socketId) => {
+  // Create a simple peer connection
+  const createPeerConnection = useCallback(() => {
     const pc = new RTCPeerConnection(rtcConfig);
 
-    if (localStream) {
-      localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
+    // If the local stream is available, add its tracks
+    if (mystream) {
+      mystream.getTracks().forEach((track) => {
+        pc.addTrack(track, mystream);
+      });
     }
 
+    // Handle incoming remote tracks
     pc.ontrack = (event) => {
-      console.log("Remote track received from", socketId);
-      setRemoteStreams((prevStreams) => {
-        if (!prevStreams.some((s) => s.socketId === socketId)) {
-          return [...prevStreams, { socketId, stream: event.streams[0] }];
-        }
-        return prevStreams;
-      });
+      console.log("Remote track received");
+      const [stream] = event.streams;
+      setRemoteStream(stream);
     };
 
+    // Send ICE candidates to the signaling server
     pc.onicecandidate = (event) => {
       if (event.candidate) {
-        socketRef.current.emit("ice-candidate", { candidate: event.candidate, target: socketId });
+        socketRef.current.emit("ice-candidate", { candidate: event.candidate });
       }
     };
 
-    peerConnections.current[socketId] = pc;
+    peerConnectionRef.current = pc;
     return pc;
-  };
+  }, [mystream, rtcConfig]);
+
+  // Make an offer to initiate a connection
+  const makeOffer = useCallback(async () => {
+    if (!peerConnectionRef.current) {
+      createPeerConnection();
+    }
+    console.log('Make offer called');
+    const offer = await peerConnectionRef.current.createOffer();
+    await peerConnectionRef.current.setLocalDescription(offer);
+    socketRef.current.emit('offer', { offer });
+  }, [createPeerConnection]);
 
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="container mx-auto p-4 flex gap-4 h-screen">
+        {/* Left side: Video & Chat UI */}
         <div className="flex-grow flex flex-col">
           <div className="bg-[#151515] rounded-lg p-4 flex-grow mb-4">
             <div className={`grid ${pinnedParticipant ? 'grid-cols-1' : 'grid-cols-2'} gap-4 h-full`}>
-              {participants.map((participant) => (
+              {participants.map((participant) =>
                 pinnedParticipant === null || pinnedParticipant === participant.id ? (
                   <motion.div
                     key={participant.id}
@@ -152,7 +184,7 @@ function VideoChatInterFace() {
                     </div>
                   </motion.div>
                 ) : null
-              ))}
+              )}
             </div>
           </div>
 
@@ -179,9 +211,17 @@ function VideoChatInterFace() {
             <button className="p-4 rounded-full bg-red-500 hover:bg-red-600 transition-colors">
               <Phone size={24} />
             </button>
+            {/* Button to start the connection */}
+            <button
+              onClick={makeOffer}
+              className="p-4 rounded-full bg-blue-500 hover:bg-blue-600 transition-colors"
+            >
+              Make Offer/Call
+            </button>
           </motion.div>
         </div>
 
+        {/* Right side: Chat & Participants UI */}
         <div className="w-80 bg-[#151515] rounded-lg p-4 flex flex-col">
           <motion.div
             initial={{ opacity: 0 }}
@@ -190,14 +230,18 @@ function VideoChatInterFace() {
           >
             <button
               onClick={() => setActiveChat('regular')}
-              className={`flex-1 py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors ${activeChat === 'regular' ? 'bg-gray-700' : 'hover:bg-gray-700/50'}`}
+              className={`flex-1 py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors ${
+                activeChat === 'regular' ? 'bg-gray-700' : 'hover:bg-gray-700/50'
+              }`}
             >
               <MessageCircle size={20} />
               Chat
             </button>
             <button
               onClick={() => setActiveChat('ai')}
-              className={`flex-1 py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors ${activeChat === 'ai' ? 'bg-gray-700' : 'hover:bg-gray-700/50'}`}
+              className={`flex-1 py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors ${
+                activeChat === 'ai' ? 'bg-gray-700' : 'hover:bg-gray-700/50'
+              }`}
             >
               <Bot size={20} />
               AI Chat
@@ -261,10 +305,7 @@ function VideoChatInterFace() {
                 <Users size={20} />
                 <h3 className="font-medium">Participants ({participants.length})</h3>
               </div>
-              <motion.div
-                animate={{ rotate: isParticipantsOpen ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
+              <motion.div animate={{ rotate: isParticipantsOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
                 <ChevronDown size={20} />
               </motion.div>
             </button>
@@ -287,9 +328,7 @@ function VideoChatInterFace() {
                       <div className="flex items-center gap-2">
                         <span>{participant.name}</span>
                         {participant.isHost && (
-                          <span className="text-xs bg-blue-500 px-2 py-0.5 rounded">
-                            Host
-                          </span>
+                          <span className="text-xs bg-blue-500 px-2 py-0.5 rounded">Host</span>
                         )}
                       </div>
                       <div className="flex items-center gap-2">
@@ -297,11 +336,7 @@ function VideoChatInterFace() {
                           onClick={() => handlePinParticipant(participant.id)}
                           className="text-gray-400 hover:text-white transition-colors"
                         >
-                          {pinnedParticipant === participant.id ? (
-                            <PinOff size={16} />
-                          ) : (
-                            <Pin size={16} />
-                          )}
+                          {pinnedParticipant === participant.id ? <PinOff size={16} /> : <Pin size={16} />}
                         </button>
                         {participant.isHost && (
                           <button
@@ -310,11 +345,7 @@ function VideoChatInterFace() {
                               // Handle mute/unmute
                             }}
                           >
-                            {participant.isMuted ? (
-                              <MicOff size={16} />
-                            ) : (
-                              <Mic size={16} />
-                            )}
+                            {participant.isMuted ? <MicOff size={16} /> : <Mic size={16} />}
                           </button>
                         )}
                       </div>
