@@ -4,7 +4,7 @@ import bcrypt from "bcrypt"
 import { asyncHandler } from "../utils/Asynchandler.js";
 import { z } from "zod"
 import dotenv, { parse } from "dotenv"
-
+import cloudinary from "../utils/cloudinary.js";
 import { io ,userSocketMap,getReceiverSocketId} from "../utils/socket.js";
 import { EventModel } from "../models/event-model.js";
 
@@ -153,54 +153,79 @@ export const checkAuth = asyncHandler(async (req, res) => {
 
 export const hostEvents = asyncHandler(async (req, res) => {
     const {
-        logo,
         title,
+        logo,
         eventType,
         visibility,
-        eventCategories,
-        prizePool,
-        description,
+        location,
+        categories,
         entryFee,
-        maxTeamSize,
-        participants,
-        endDate,
-        registrationDeadline,
-        judges,
-        submissions,
-        rules,
+        totalPrizePool,
+        prizeCurrency,
+        firstPrize,
+        secondPrize,
+        thirdPrize,
+        additionalPrizes,
+        participationType,
+        opportunityDetails,
+        registrationStartDate,
+        registrationEndDate,
+        maxRegistrations,
         guidelines,
-        location
+        rules,
+        judges,
+        minTeamSize,
+        maxTeamSize,
+        status
     } = req.body;
+    console.log(req.body)
     if (
         !logo ||
         !eventType ||
-        !eventCategories ||
-        !description ||
-        !endDate ||
-        !registrationDeadline ||
+        !registrationStartDate ||
+        !registrationEndDate ||
+        !guidelines ||
+        !rules ||
         !judges ||
-        !title
+        !title||
+        !visibility ||
+        !entryFee
     ) {
         res.status(400);
         throw new Error("Please provide all required fields");
     }
+    let uploadedResponse;
+    const response = await cloudinary.uploader.upload(logo);
+    uploadedResponse = response.secure_url;
+
 
 
     const event = await EventModel.create({
-        logo,
+        hostedBy : req.user._id,
+        title,
+        logo : uploadedResponse,
         eventType,
         visibility,
-        eventCategories,
-        prizePool,
-        description,
-        hostedBy : req.user._id,
+        location,
+        categories,
+        totalPrizePool,
+        prizeCurrency,
+        status : status ? status : "upcoming",
+        firstPrize,
+        secondPrize,
+        thirdPrize,
+        additionalPrizes,
+        participationType,
+        opportunityDetails,
+        registrationStartDate,
+        registrationEndDate,
+        maxRegistrations,
+        guidelines,
         entryFee,
-        maxTeamSize,
-        participants,
-        endDate,
-        registrationDeadline,
+        rules,
         judges,
-        title,
+        minTeamSize,
+        maxTeamSize,
     });
     const user = req.user
 

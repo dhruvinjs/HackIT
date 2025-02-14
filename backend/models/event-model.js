@@ -15,36 +15,51 @@ const Event=new mongoose.Schema({
         },
         visibility:{
             type:String,
-            enum:["public","invite-only"]
+            enum:["public","invite-only"],
+            default : "public"
         },
-        eventCategories:{
-            type:String,
-            enum:["Hackathon" , "WorkShop" , "Webinar"],
-            default : "Hackathon"
-        },
-        prizePool:[{
-        currency:{type:String,enum:["inr","usd"],default:"inr"},
-        firstPrice:{type:Number,required:true},
-        secondPrice:{type:Number,required:true},
-        additionalPrices:{type:String}    
-        },
+        categories:[
+            {
+                type:String,
+            }
         ],
-        description: {
-            type: String,
-            required: true,
-            maxlength: 5000
+        totalPrizePool:{
+            type:String,
+            required:true
+        },
+        opportunityDetails:{
+            type:String,
+            required:true,
+        },
+        prizeCurrency:{type:String,enum:["INR","USD"],default:"INR"},
+        firstPrize:{type:String,required:true},
+        secondPrize:{type:String,required:true},
+        thirdPrize:{type:String,required:true},
+        additionalPrizes:{
+            type:String,
+            required:true
         },
         hostedBy:{
             type:mongoose.Schema.Types.ObjectId,
             ref:"users",
             required:true
         },
+    participationType : {
+        type:String,
+        enum :["individual" , "team"],
+        default : "individual",
+    },
         entryFee:{
-            type:Number,
+            type:String,
+            required:true
           },
+          minTeamSize: {
+            type: String,
+            required:true
+        },  
         maxTeamSize: {
-            type: Number,
-            default: 4
+            type: String,
+            required:true
         },
         participants: [
             { type: mongoose.Schema.Types.ObjectId, ref: 'teams' }
@@ -59,11 +74,11 @@ const Event=new mongoose.Schema({
             prizeAmt:{type:Number}//Runner up will have some price amt 
         }]
        },
-        endDate: {
-            type: Date,
+       registrationStartDate:{
+        type: Date,
             required: true
-        },
-        registrationDeadline: {
+       },
+       registrationEndDate: {
             type: Date,
             required: true
         },
@@ -72,13 +87,13 @@ const Event=new mongoose.Schema({
                 user: {
                   type: mongoose.Schema.Types.ObjectId,
                   ref: "users",
-                  required: true,
+                //   required: true,
                 },
                 expertise: String,
                 // New field to store the judge's name at the time of event creation
                 name: {
                   type: String,
-                  required: true,
+                //   required: true,
                 },
               },
         ],
@@ -86,7 +101,9 @@ const Event=new mongoose.Schema({
             type:String
         },
         guidelines:{
-            type:String
+            type:String,
+            required:true,
+            maxLength : 3000
         },
         submissions: [
             {
@@ -101,7 +118,36 @@ const Event=new mongoose.Schema({
             type:String,
             enum:['active',"upcoming","completed"],
             defualt:"upcoming"
+          },
+          maxRegistrations:{
+            type:String,
+            required:true,
           }
 })
 
 export const EventModel=mongoose.model('event',Event)
+
+
+
+// title,
+// logo,
+// eventType,
+// visibility,
+// location,
+// categories,
+// totalPrizePool,
+// prizeCurrency,
+// firstPrize,
+// secondPrize,
+// thirdPrize,
+// additionalPrizes,
+// participationType,
+// opportunityDetails,
+// registrationStartDate,
+// registrationEndDate,
+// maxRegistrations,
+// guidelines,
+// rules,
+// judges,
+// minTeamSize,
+// maxTeamSize,

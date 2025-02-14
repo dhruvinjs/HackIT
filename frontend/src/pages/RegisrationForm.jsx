@@ -13,6 +13,8 @@ function RegisrationForm() {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [agreed, setAgreed] = useState(false);
 
+  
+
   const hackathonInfo = {
     name: "TechNova Hackathon 2025",
     date: "March 15-17, 2025",

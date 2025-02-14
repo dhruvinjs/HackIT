@@ -33,7 +33,7 @@ const mongoUrl=process.env.MONGO_URL
 connectDb()
 
 // app.use(passport.initialize())
-app.use(e.json())
+app.use(e.json({limit : '50mb'}))
 app.use(cookieParser())
 app.use(cors({
     origin: 'http://localhost:5173',

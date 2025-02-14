@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useForm,useFieldArray  } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { CalendarRange, Users, Info, Trophy, Upload, Globe, MapPin, Lock, Unlock, Layers, Gift, Search } from 'lucide-react';
 import { format } from 'date-fns';
 import { Nav } from '../components';
+import { useHostStore } from '../store/useHostStore';
+import { useAuthStore } from '../store/useAuthStore';
+
 
 function OrganiserForm() {
-    const { register, handleSubmit, watch, control,formState: { errors } } = useForm();
-    const [logoPreview, setLogoPreview] = useState('');
+    const { register, handleSubmit, watch, control, formState: { errors } } = useForm();
+    const [logoPreview, setLogoPreview] = useState(null);
     const participationType = watch('participationType');
     const eventType = watch('eventType');
 
@@ -16,20 +19,44 @@ function OrganiserForm() {
         name: 'judges',  // This will be the array name in form data
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const { HostHackathon } = useHostStore()
+
+    const onSubmit = async (data) => {
+        const finalData = {...data,logo : logoPreview,entryFee : "200rs"}
+        console.log(finalData);
+        await HostHackathon(finalData)
     };
 
+    // const handleLogoChange = (e) => {
+    //     const file = e.target.files[0];
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onloadend = () => {
+    //             setLogoPreview(reader.result);
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // };
+
     const handleLogoChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setLogoPreview(reader.result);
-            };
-            reader.readAsDataURL(file);
+        const file = e.target.files[0]
+
+        if (!file) {
+            console.log("image is not selected")
+            return
         }
-    };
+
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+
+        reader.onload = async () => {
+            const base64Image = reader.result;
+            setLogoPreview(base64Image)
+        }
+        console.log(logoPreview)
+    }
+
+
 
     const fadeIn = {
         hidden: { opacity: 0, y: 20 },
@@ -112,7 +139,7 @@ function OrganiserForm() {
                                         onChange={handleLogoChange}
                                         className="hidden"
                                         id="logo-upload"
-                                        {...register("logo")}
+                                        
                                     />
                                     <label
                                         htmlFor="logo-upload"
