@@ -398,7 +398,9 @@ export const getUsers = async(req,res)=>{
             return res.status(400).json({ error: "Search text is required" });
         }
         const users = await UserModel.find({ name: { $regex: name, $options: "i" } });
-
+        if(users.length===0){
+            return res.status(400).json({messsage:"no user found"})
+        }
         res.status(200).json(users);
     } catch (error) {
         console.error("Error searching users:", error);
