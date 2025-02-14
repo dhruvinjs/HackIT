@@ -2,6 +2,7 @@ import e from "express";
 import {checkAuth, getActiveEvents, getParticipants, hostEvents, registerEvents,  updateProfile, userLogin, userLogout, userSignUp}  from "../controllers/user-controllers.js";
 // import passport from "passport";
 import { authProtection } from "../middlewares/authProtection.js";
+import { hostProtection } from "../middlewares/hostProtection.js";
 
 const useroutes=e.Router()
 useroutes.route('/signup').post(userSignUp)
@@ -25,6 +26,6 @@ useroutes.post('/logout',authProtection,userLogout)
   useroutes.get('/checkAuth' , authProtection , checkAuth)
   useroutes.post('/hostEvent',authProtection,hostEvents)
   useroutes.get('/events',authProtection,getActiveEvents)
-  useroutes.get('/participants',authProtection,getParticipants)  
-  useroutes.post('/apply',authProtection,registerEvents)
+  useroutes.get('/getParticipants/:eventID',authProtection,hostProtection,getParticipants)  
+  useroutes.post('/apply/:id',authProtection,registerEvents)
 export {useroutes}

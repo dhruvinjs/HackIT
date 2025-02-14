@@ -44,11 +44,11 @@ const Event=new mongoose.Schema({
             ref:"users",
             required:true
         },
-    participationType : {
-        type:String,
-        enum :["individual" , "team"],
-        default : "individual",
-    },
+        participationType : {
+            type:String,
+            enum :["individual" , "team"],
+            default : "individual",
+        },
         entryFee:{
             type:String,
             required:true
@@ -79,6 +79,10 @@ const Event=new mongoose.Schema({
             required: true
        },
        registrationEndDate: {
+            type: Date,
+            required: true
+        },
+        projectSubmissionDeadline: {
             type: Date,
             required: true
         },

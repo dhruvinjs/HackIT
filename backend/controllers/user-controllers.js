@@ -7,6 +7,7 @@ import dotenv, { parse } from "dotenv"
 import cloudinary from "../utils/cloudinary.js";
 import { io ,userSocketMap,getReceiverSocketId} from "../utils/socket.js";
 import { EventModel } from "../models/event-model.js";
+import { TeamModel } from "../models/team.model.js";
 
 dotenv.config({
     path: './.env'
@@ -169,6 +170,7 @@ export const hostEvents = asyncHandler(async (req, res) => {
         participationType,
         opportunityDetails,
         registrationStartDate,
+        projectSubmissionDeadline,
         registrationEndDate,
         maxRegistrations,
         guidelines,
@@ -189,7 +191,8 @@ export const hostEvents = asyncHandler(async (req, res) => {
         !judges ||
         !title||
         !visibility ||
-        !entryFee
+        !entryFee ||
+        !projectSubmissionDeadline
     ) {
         res.status(400);
         throw new Error("Please provide all required fields");
@@ -220,6 +223,7 @@ export const hostEvents = asyncHandler(async (req, res) => {
         registrationStartDate,
         registrationEndDate,
         maxRegistrations,
+        projectSubmissionDeadline,
         guidelines,
         entryFee,
         rules,
@@ -248,8 +252,6 @@ export const getActiveEvents=asyncHandler(async (req,res) => {
         return res.status(201).json({message:"No Current events active"})
     }
     return res.status(200).json({success:true,events})
-
-
 })
 
 export const getParticipants=asyncHandler(async (req,res) => {
@@ -257,45 +259,54 @@ export const getParticipants=asyncHandler(async (req,res) => {
     if(!eventID){
         return res.status(400).json({message:"Event id missing"})
     }
-    const event = await EventModel.findById(eventId);
+    const event = await EventModel.findById(eventID);
     if (!event) {
       res.status(404);
       throw new Error("Event not found");
     }
-  
     // Count the participants using the length of the participants array
     const participantCount = event.participants.length;
     return res.status(200).json({
         success: true,
         participantCount,
+        participants : event.participants
       });
 })
 
 export const registerEvents=asyncHandler(async (req,res) => {
-    const {eventId}=req.body
-
-    if(!eventId){
-        return res.status(400).json({message:"Event id missing"})
+    const id = req.params.id;
+    const {name,members}=req.body;
+    if(!name){
+        return res.status(400).json({message : "Team name is required."})
     }
-    const event = await EventModel.findById(eventId);
-    if (!event) {
-      return res.status(404).json({message:"Event not found"});      
+    const event = await EventModel.findById(id); 
+    if(!event){
+        return res.status(404).json({message:"Event not found."});
+    }
+    if(Number(event.maxRegistrations) == event.participants.length){
+        return res.status(400).json({message : "Event registeration limit have reached."})
+    }
+    const currentDate = new Date();
+    if(currentDate == event.registrationEndDate){
+        return res.status(400).json({message : "Event registeration have Ended."})
     }
 
+    let membersArr = event.participationType == "individual" ? [
+        {
+            memberId : req.user._id,
+            role : "leader"
+        }
+    ] : [
+        {
+            memberId : req.user._id,
+            role : "leader"
+        },...members
+    ]
 
-    const user=req.user
-
-    event.participants.push(user._id)
-    await event.save()
-
-    user.participatedIn.push(event._id)
-    await user.save()
-    return res.status(201).json({
-        message: "You have been successfully registered for the event!",
-        user: user.participatedIn,
-        eventParticipant: event.participants
-      });
-
-
-    
+    const team = await TeamModel.create({
+        name , event : id , members :membersArr
+    })
+    event.participants.push(team);
+    await event.save();
+    return res.status(200).json({message : "Registered of event" , team});
 })
