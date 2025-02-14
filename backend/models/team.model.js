@@ -20,7 +20,11 @@ const TeamSchema = new mongoose.Schema({
         default: 'member'
       }
     }
-  ]
+  ],
+  submission:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'submissions'
+   }
   
   
 },{timestamps:true});

@@ -30,7 +30,7 @@ const SubmissionSchema = new mongoose.Schema({
   },
   hackathon: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'hackathons',
+    ref: 'events',
     required: true
   },
   judgesFeedback: [

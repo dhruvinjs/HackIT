@@ -310,3 +310,60 @@ export const registerEvents=asyncHandler(async (req,res) => {
     await event.save();
     return res.status(200).json({message : "Registered of event" , team});
 })
+
+
+
+export const projectSubmission=asyncHandler(async (req,res) => {
+    const requestBody={
+        githubRepoLink: z.string().url("Invalid GitHub URL").regex(/^https:\/\/github\.com\/[a-zA-Z0-9-]+$/, "Invalid GitHub repo link"),
+        teamId:z.string().min(3).max(100),
+        eventId:z.string().min(3).max(100),
+        description:z.string().min(3).max(100),
+        techStack:z.array(z.string()),
+
+    }
+
+    const parsedBody=requestBody.safeParse(req.body)
+    if(!parsedBody.success){
+        return res.status(400).json({errors: parsedData.error.errors})
+    }
+    const {githubRepoLink,teamId,eventId}=parsedBody.data
+    const event=await EventModel.findById(eventId)
+    if(!event){
+        return res.status(400).json({message:"Event Not Found"})
+    }
+    const team=await TeamModel.findById(teamId)
+    if(!team){
+        return res.status(400).json({message:"Team not found"})
+    }
+    // Validate event submission deadline
+    const currentDate = new Date();
+
+    const eventDeadline = new Date(event.projectSubmissionDeadline); // Assuming `submissionDeadline` is stored in the database
+
+    if(currentDate>eventDeadline){
+        return res.status(400).json({message:"Sorry time for submission has ended"})
+    }
+
+    const newSubmission=await submissionModel.create({
+        title: `Submission by ${team.name}`, // You can adjust the title dynamically
+    description: parsedBody.data.description,
+    techStack: parsedBody.data.techStack,
+    githubRepo: githubRepoLink,
+    demoVideo: req.body.demoVideo || "", // Optional field
+    team: teamId,
+    hackathon: eventId,
+    judgesFeedback: [], // Initially empty
+    averageScore: 0, // No score yet
+    status: "submitted" // Default status
+    })
+    team.submission=newSubmission._id
+
+    event.submissions=newSubmission._id
+    await team.save()
+    await event.save()
+
+    return res.status(201).json({message:"Project is submitted"})
+
+
+})
