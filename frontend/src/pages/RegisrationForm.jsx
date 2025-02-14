@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Nav } from '../components';
 import { Search, UserPlus, X, Send, Calendar, MapPin, Trophy, CreditCard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import { useHostStore } from '../store/useHostStore';
-import { useAuthStore } from '../store/useAuthStore';
 
 function RegisrationForm() {
   const [teamName, setTeamName] = useState('');
@@ -19,8 +19,6 @@ function RegisrationForm() {
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   const { selectedHackathon, getEventInfo } = useHostStore();
-  const { getUsers, users } = useAuthStore();
-
   const { id } = useParams();
 
   useEffect(() => {
@@ -28,24 +26,36 @@ function RegisrationForm() {
       await getEventInfo(id);
     };
     hackathonInfo();
-  }, []);
+  }, [id, getEventInfo]);
 
-  const searchCall = async (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    
-    if (query.length > 0) {
-      await getUsers();
-      setShowSuggestions(true);
-      const filtered = users?.filter(user =>
-        user.name.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredUsers(filtered || []);
-    } else {
-      setShowSuggestions(false);
+  // Debounced API call via useEffect when searchQuery changes
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
       setFilteredUsers([]);
+      setShowSuggestions(false);
+      return;
     }
-  };
+    const timer = setTimeout(() => {
+      axios
+        .post(
+          "http://localhost:4000/api/user/getUsers",
+          { name: searchQuery },
+          { withCredentials: true } // This sends cookies along with the request
+        )
+        .then((response) => {
+          // Assuming response.data returns an array of users
+          setFilteredUsers(response.data);
+          setShowSuggestions(true);
+        })
+        .catch((error) => {
+          console.error("Error fetching users:", error);
+          setFilteredUsers([]);
+          setShowSuggestions(false);
+        });
+    }, 300); // 300ms debounce delay
+  
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const selectUser = (user) => {
     setNewMemberName(user.name);
@@ -74,23 +84,19 @@ function RegisrationForm() {
       setError('Maximum 5 team members allowed');
       return;
     }
-
     if (!newMemberName || !newMemberEmail) {
       setError('Please fill in both name and email');
       return;
     }
-
     if (!newMemberEmail.includes('@')) {
       setError('Please enter a valid email');
       return;
     }
-
     const newMember = {
       id: Math.random().toString(36).substr(2, 9),
       name: newMemberName,
       email: newMemberEmail,
     };
-
     setTeamMembers([...teamMembers, newMember]);
     setNewMemberName('');
     setNewMemberEmail('');
@@ -121,6 +127,7 @@ function RegisrationForm() {
     alert('Registration submitted successfully!');
   };
 
+  // Filter team members based on the current searchQuery (if needed)
   const filteredMembers = teamMembers.filter(member =>
     member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     member.email.toLowerCase().includes(searchQuery.toLowerCase())
@@ -242,7 +249,7 @@ function RegisrationForm() {
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={searchCall}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-900"
                   placeholder="Search team members..."
                 />
@@ -320,7 +327,7 @@ function RegisrationForm() {
             >
               <AnimatePresence>
                 <div className="space-y-4">
-                  {filteredMembers.map((member) => (
+                  {teamMembers.map((member) => (
                     <motion.div
                       key={member.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -332,7 +339,7 @@ function RegisrationForm() {
                         <h3 className="text-sm font-medium text-white">{member.name}</h3>
                         <p className="text-sm text-white">{member.email}</p>
                       </div>
-                      <div className="flex items-center text-white bg-[#151515] space-x-2">
+                      <div className="flex items-center space-x-2">
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
@@ -366,12 +373,13 @@ function RegisrationForm() {
               className="mb-8"
             >
               <h2 className="text-xl font-semibold text-white mb-4">Payment Details</h2>
-              <div className="text-white bg-black p-6 rounded-lg">
+              <div className="bg-black p-6 rounded-lg">
                 <div className="mb-4">
                   <p className="text-lg font-medium text-white mb-2">Registration Fee: {hackathonInfo.registrationFee}</p>
-                  <p className="text-sm text-white">Includes access to the venue, meals, and swag bags for all team members</p>
+                  <p className="text-sm text-white">
+                    Includes access to the venue, meals, and swag bags for all team members
+                  </p>
                 </div>
-
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-white mb-2">Payment Method</label>
                   <div className="space-y-2">
@@ -395,7 +403,6 @@ function RegisrationForm() {
                     </label>
                   </div>
                 </div>
-
                 <AnimatePresence mode="wait">
                   {paymentMethod === 'card' && (
                     <motion.div
@@ -406,7 +413,7 @@ function RegisrationForm() {
                     >
                       <div>
                         <label className="block text-sm font-medium text-white mb-2">Card Number</label>
-                        <div className="flex">
+                        <div className="flex relative">
                           <CreditCard className="h-5 w-5 text-gray-400 absolute mt-3 ml-3" />
                           <input
                             type="text"
