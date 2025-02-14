@@ -34,7 +34,7 @@ export function HackathonDetails() {
 
     const navigate = useNavigate()
 
-    const handleUpdate = () => {
+    const handleApply = () => {
         navigate("/register")
     }
 
@@ -78,7 +78,7 @@ export function HackathonDetails() {
 
                 </div>
                 <div className='flex justify-end mt-4'>
-                    <button className='bg-blue-500 px-6 py-2 rounded-md font-semibold' onClick={handleUpdate}>Apply</button>
+                    <button className='bg-blue-500 px-6 py-2 rounded-md font-semibold' onClick={() => handleApply()}>Apply</button>
                 </div>
 
             </div>

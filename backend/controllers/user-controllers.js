@@ -364,6 +364,4 @@ export const projectSubmission=asyncHandler(async (req,res) => {
     await event.save()
 
     return res.status(201).json({message:"Project is submitted"})
-
-
 })
